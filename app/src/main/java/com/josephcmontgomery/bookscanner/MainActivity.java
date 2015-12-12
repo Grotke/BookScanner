@@ -1,11 +1,14 @@
 package com.josephcmontgomery.bookscanner;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.JsonReader;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +18,11 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity{
     private Button scanBtn;
@@ -54,8 +62,10 @@ public class MainActivity extends AppCompatActivity{
         if(scanningResult != null){
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
+            String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + scanContent;
             formatTxt.setText("FORMAT: " + scanFormat);
             contentTxt.setText("CONTENT: " + scanContent);
+            new GetBookByISBN().execute(url);
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT);
@@ -83,5 +93,43 @@ public class MainActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class GetBookByISBN extends AsyncTask<String,Void,Void>{
+        protected Void doInBackground(String... urls) {
+            InputStream is;
+            try {
+                is = getBookSearchResults(urls[0]);
+                readJsonStream(is);
+            } catch (Exception e) {
+                if(e.getMessage() != null) {
+                    Log.e("EXCEPTION", e.getMessage());
+                }
+            }
+            return null;
+        }
+
+        private InputStream getBookSearchResults(String inUrl) throws Exception{
+            URL outUrl = new URL(inUrl);
+            HttpURLConnection conn = (HttpURLConnection) outUrl.openConnection();
+            conn.setReadTimeout(10000 /* milliseconds */);
+            conn.setConnectTimeout(15000 /* milliseconds */);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            // Starts the query
+            conn.connect();
+            int response = conn.getResponseCode();
+            Log.d("RESPONSE CODE", "The response is: " + response);
+            return conn.getInputStream();
+        }
+
+        private void readJsonStream(InputStream in) throws Exception {
+            JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+            try {
+                BookJsonInterpreter.processSearchResult(reader);
+            } finally {
+                reader.close();
+            }
+        }
     }
 }
