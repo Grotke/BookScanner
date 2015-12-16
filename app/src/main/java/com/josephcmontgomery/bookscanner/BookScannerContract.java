@@ -22,16 +22,15 @@ public final class BookScannerContract {
         public static final String COLUMN_NAME_LOCATION_ID = "locationId";
     }
 
-    public static abstract class Authors implements BaseColumns{
+    /*public static abstract class Authors implements BaseColumns{
         public static final String TABLE_NAME ="authors";
-        public static final String COLUMN_NAME_FIRST_NAME = "firstName";
-        public static final String COLUMN_NAME_LAST_NAME = "lastName";
-    }
+        public static final String COLUMN_NAME_NAME = "name";
+    } */
 
     public static abstract class AuthorsOfBooks implements BaseColumns{
         public static final String TABLE_NAME = "authorsOfBooks";
         public static final String COLUMN_NAME_BOOK_ID = "bookId";
-        public static final String COLUMN_NAME_AUTHOR_ID = "authorId";
+        public static final String COLUMN_NAME_AUTHOR = "author";
     }
 
     public static abstract class Categories implements BaseColumns{

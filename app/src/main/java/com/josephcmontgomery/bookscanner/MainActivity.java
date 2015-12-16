@@ -27,6 +27,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity{
     private Button scanBtn;
     private TextView formatTxt, contentTxt;
+    private BookInformation book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +64,11 @@ public class MainActivity extends AppCompatActivity{
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
             String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + scanContent;
+            book = new BookInformation();
+            book.isbn = scanContent;
             formatTxt.setText("FORMAT: " + scanFormat);
             contentTxt.setText("CONTENT: " + scanContent);
-            new GetBookByISBN().execute(url);
+            new GetBookByISBN().execute(book);
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT);
@@ -95,12 +98,16 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private class GetBookByISBN extends AsyncTask<String,Void,Void>{
-        protected Void doInBackground(String... urls) {
+    private class GetBookByISBN extends AsyncTask<BookInformation,Void,Void>{
+        protected Void doInBackground(BookInformation... books) {
             InputStream is;
             try {
-                is = getBookSearchResults(urls[0]);
-                readJsonStream(is);
+                String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + books[0].isbn;
+                is = getBookSearchResults(url);
+                readJsonStream(is, books[0]);
+                if(books[0] != null){
+                    Log.e("BOOK", books[0].toString());
+                }
             } catch (Exception e) {
                 if(e.getMessage() != null) {
                     Log.e("EXCEPTION", e.getMessage());
@@ -123,10 +130,10 @@ public class MainActivity extends AppCompatActivity{
             return conn.getInputStream();
         }
 
-        private void readJsonStream(InputStream in) throws Exception {
+        private void readJsonStream(InputStream in, BookInformation book) throws Exception {
             JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
             try {
-                BookJsonInterpreter.processSearchResult(reader);
+                BookJsonInterpreter.processSearchResult(reader, book);
             } finally {
                 reader.close();
             }
