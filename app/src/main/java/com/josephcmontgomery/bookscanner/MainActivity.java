@@ -25,7 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity{
-    private Button scanBtn;
+    private Button scanBtn, viewBtn;
     private TextView formatTxt, contentTxt;
     private BookInformation book;
 
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
         scanBtn = (Button)findViewById(R.id.scan_button);
+        viewBtn = (Button)findViewById(R.id.view_books_button);
         formatTxt = (TextView)findViewById(R.id.scan_format);
         contentTxt = (TextView)findViewById(R.id.scan_content);
         scanBtn.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +46,15 @@ public class MainActivity extends AppCompatActivity{
                 if(v.getId() == R.id.scan_button){
                     IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
                     scanIntegrator.initiateScan();
+                }
+            }
+        });
+        viewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.getId() == R.id.view_books_button){
+                    Intent intent = new Intent(MainActivity.this, DataViewActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -107,6 +117,7 @@ public class MainActivity extends AppCompatActivity{
                 readJsonStream(is, books[0]);
                 if(books[0] != null){
                     Log.e("BOOK", books[0].toString());
+                    Database.insertBook(books[0], MainActivity.this.getApplicationContext());
                 }
             } catch (Exception e) {
                 if(e.getMessage() != null) {
@@ -115,6 +126,7 @@ public class MainActivity extends AppCompatActivity{
             }
             return null;
         }
+
 
         private InputStream getBookSearchResults(String inUrl) throws Exception{
             URL outUrl = new URL(inUrl);

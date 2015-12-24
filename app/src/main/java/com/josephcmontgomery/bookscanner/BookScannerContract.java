@@ -15,22 +15,21 @@ public final class BookScannerContract {
         public static final String COLUMN_NAME_SUBTITLE = "subtitle";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_PAGE_COUNT = "pageCount";
-        public static final String COLUMN_NAME_PUBLISHED_DATE = "publishedDate";
         public static final String COLUMN_NAME_AVERAGE_RATING = "averageRating";
         public static final String COLUMN_NAME_RATINGS_COUNT = "ratingsCount";
         public static final String COLUMN_NAME_DATE_SCANNED = "dateScanned";
         public static final String COLUMN_NAME_LOCATION_ID = "locationId";
     }
 
-    /*public static abstract class Authors implements BaseColumns{
+    public static abstract class Authors implements BaseColumns{
         public static final String TABLE_NAME ="authors";
         public static final String COLUMN_NAME_NAME = "name";
-    } */
+    }
 
     public static abstract class AuthorsOfBooks implements BaseColumns{
         public static final String TABLE_NAME = "authorsOfBooks";
         public static final String COLUMN_NAME_BOOK_ID = "bookId";
-        public static final String COLUMN_NAME_AUTHOR = "author";
+        public static final String COLUMN_NAME_AUTHOR_ID = "authorId";
     }
 
     public static abstract class Categories implements BaseColumns{

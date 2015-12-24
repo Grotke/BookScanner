@@ -52,38 +52,28 @@ public class BookJsonInterpreter {
         while(reader.hasNext()) {
             String name = reader.nextName();
             if (name.equals("title")) {
-                //Log.e("TITLE", reader.nextString());
                 book.title = reader.nextString();
             } else if (name.equals("subtitle")) {
-                //Log.e("SUBTITLE", reader.nextString());
                 book.subtitle = reader.nextString();
             } else if (name.equals("authors")) {
                 reader.beginArray();
                 while (reader.hasNext()) {
-                    //Log.e("AUTHOR NAME", reader.nextString());
                     book.authors.add(reader.nextString());
                 }
                 reader.endArray();
-            //} else if (name.equals("publishedDate")) {
-                //Log.e("PUBLISH DATE", reader.nextString());
             } else if (name.equals("description")) {
-                //Log.e("DESCRIPTION", reader.nextString());
                 book.description = reader.nextString();
             } else if (name.equals("pageCount")) {
-                //Log.e("PAGECOUNT", String.valueOf(reader.nextInt()));
                 book.pageCount = reader.nextInt();
             } else if (name.equals("categories")) {
                 reader.beginArray();
                 while (reader.hasNext()) {
-                    //Log.e("CATEGORY", reader.nextString());
                     book.categories.add(reader.nextString());
                 }
                 reader.endArray();
             } else if (name.equals("averageRating")) {
-                //Log.e("AVERAGE RATING", String.valueOf(reader.nextDouble()));
                 book.averageRating = reader.nextDouble();
             } else if (name.equals("ratingsCount")) {
-                //Log.e("RATINGSCOUNT", String.valueOf(reader.nextInt()));
                 book.ratingsCount = reader.nextInt();
             } else {
                 reader.skipValue();
