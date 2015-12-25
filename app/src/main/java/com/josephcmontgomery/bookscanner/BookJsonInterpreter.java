@@ -7,7 +7,7 @@ import android.util.Log;
  * Created by Joseph on 12/11/2015.
  */
 public class BookJsonInterpreter {
-    public static void processSearchResult(JsonReader reader, BookInformation book) throws Exception{
+    public static boolean processSearchResult(JsonReader reader, BookInformation book) throws Exception{
         int numberOfItems;
 
         reader.beginObject();
@@ -17,6 +17,7 @@ public class BookJsonInterpreter {
                 numberOfItems = reader.nextInt();
                 if (numberOfItems < 1) {
                     Log.e("NOT FOUND", "That isbn wasn't found.");
+                    return false;
                 }
             }
             else if (name.equals("items")) {
@@ -26,6 +27,7 @@ public class BookJsonInterpreter {
             }
         }
         reader.endObject();
+        return true;
     }
 
     private static void processItemArray(JsonReader reader, BookInformation book) throws Exception{

@@ -23,11 +23,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+
+//TODO: Handle database with non-isbn barcodes. Inform user of book not found.
 
 public class MainActivity extends AppCompatActivity{
+    private ArrayList<BookInformation> books;
     private Button scanBtn, viewBtn;
     private TextView formatTxt, contentTxt;
-    private BookInformation book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if(v.getId() == R.id.scan_button){
+                    books = new ArrayList<BookInformation>();
                     IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
                     scanIntegrator.initiateScan();
                 }
@@ -71,14 +75,20 @@ public class MainActivity extends AppCompatActivity{
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if(scanningResult != null){
-            String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
-            String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + scanContent;
-            book = new BookInformation();
-            book.isbn = scanContent;
-            formatTxt.setText("FORMAT: " + scanFormat);
-            contentTxt.setText("CONTENT: " + scanContent);
-            new GetBookByISBN().execute(book);
+            if(resultCode == RESULT_OK) {
+                String scanContent = scanningResult.getContents();
+                String scanFormat = scanningResult.getFormatName();
+                BookInformation book = new BookInformation();
+                book.isbn = scanContent;
+                formatTxt.setText("FORMAT: " + scanFormat);
+                contentTxt.setText("CONTENT: " + scanContent);
+                books.add(book);
+                IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
+                scanIntegrator.initiateScan();
+            }
+            else if(resultCode == RESULT_CANCELED){
+                new GetBookByISBN().execute(books);
+            }
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT);
@@ -108,20 +118,22 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private class GetBookByISBN extends AsyncTask<BookInformation,Void,Void>{
-        protected Void doInBackground(BookInformation... books) {
+    private class GetBookByISBN extends AsyncTask<ArrayList<BookInformation>,Void,Void>{
+        protected Void doInBackground(ArrayList<BookInformation>... books) {
             InputStream is;
-            try {
-                String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + books[0].isbn;
-                is = getBookSearchResults(url);
-                readJsonStream(is, books[0]);
-                if(books[0] != null){
-                    Log.e("BOOK", books[0].toString());
-                    Database.insertBook(books[0], MainActivity.this.getApplicationContext());
-                }
-            } catch (Exception e) {
-                if(e.getMessage() != null) {
-                    Log.e("EXCEPTION", e.getMessage());
+            for(int i = 0; i < books[0].size(); i++) {
+                try {
+                    BookInformation book = books[0].get(i);
+                    String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + book.isbn;
+                    is = getBookSearchResults(url);
+                    if (readJsonStream(is, book)) {
+                        //Log.e("BOOK", books[0].toString());
+                        Database.insertBook(book, MainActivity.this.getApplicationContext());
+                    }
+                } catch (Exception e) {
+                    if (e.getMessage() != null) {
+                        Log.e("EXCEPTION", e.getMessage());
+                    }
                 }
             }
             return null;
@@ -142,10 +154,10 @@ public class MainActivity extends AppCompatActivity{
             return conn.getInputStream();
         }
 
-        private void readJsonStream(InputStream in, BookInformation book) throws Exception {
+        private boolean readJsonStream(InputStream in, BookInformation book) throws Exception {
             JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
             try {
-                BookJsonInterpreter.processSearchResult(reader, book);
+                return BookJsonInterpreter.processSearchResult(reader, book);
             } finally {
                 reader.close();
             }

@@ -18,7 +18,7 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_BOOKS_TABLE =     "CREATE TABLE " + BookScannerContract.Books.TABLE_NAME + " (" +
             BookScannerContract.Books._ID + " INTEGER PRIMARY KEY autoincrement, " +
-            BookScannerContract.Books.COLUMN_NAME_ISBN + TEXT_TYPE + COMMA_SEP +
+            BookScannerContract.Books.COLUMN_NAME_ISBN + " TEXT not null unique" + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_SUBTITLE + TEXT_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +

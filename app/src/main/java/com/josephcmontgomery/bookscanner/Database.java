@@ -36,16 +36,9 @@ public class Database {
                 BookScannerContract.Books.COLUMN_NAME_AVERAGE_RATING + " as avRating, " +
                 BookScannerContract.Books.COLUMN_NAME_RATINGS_COUNT + " as ratingsCount, " +
                 BookScannerContract.Books.COLUMN_NAME_DATE_SCANNED + " as dateScanned, " +
-                BookScannerContract.Authors.COLUMN_NAME_NAME + " as author, " +
-                BookScannerContract.Categories.COLUMN_NAME_CATEGORY +" as category, "+
-                BookScannerContract.Location.COLUMN_NAME_BOOK_LOCATION +
-                " as location from " + BookScannerContract.Books.TABLE_NAME + " as t1 inner join " + BookScannerContract.AuthorsOfBooks.TABLE_NAME +
-                " as t2 on t1." + BookScannerContract.Books._ID + " = t2." + BookScannerContract.AuthorsOfBooks.COLUMN_NAME_BOOK_ID +
-                " inner join " + BookScannerContract.Authors.TABLE_NAME + " as t3 on t2." + BookScannerContract.AuthorsOfBooks.COLUMN_NAME_AUTHOR_ID +
-                " = t3." + BookScannerContract.Authors._ID + " inner join " + BookScannerContract.BookCategories.TABLE_NAME + " as t4 on t1." + BookScannerContract.Books._ID +
-                " = t4." + BookScannerContract.BookCategories.COLUMN_NAME_BOOK_ID + " inner join " + BookScannerContract.Categories.TABLE_NAME + " as t5 on t4." +
-                BookScannerContract.BookCategories.COLUMN_NAME_CATEGORY_ID + " = t5." + BookScannerContract.Categories._ID + " inner join " +
-                BookScannerContract.Location.TABLE_NAME + " as t6 on t1." + BookScannerContract.Books.COLUMN_NAME_LOCATION_ID + " = t6." +
+                BookScannerContract.Location.COLUMN_NAME_BOOK_LOCATION + " as location from " +
+                BookScannerContract.Books.TABLE_NAME + " as t1 inner join " +
+                BookScannerContract.Location.TABLE_NAME + " as t2 on t1." + BookScannerContract.Books.COLUMN_NAME_LOCATION_ID + " = t2." +
                 BookScannerContract.Location._ID;
                 if(db == null){
                     initializeDB(context);
