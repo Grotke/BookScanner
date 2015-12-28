@@ -16,6 +16,7 @@ public class BookInformation {
     public int ratingsCount;
     public String description;
     public String location;
+    public String imageURL;
     public String timeLastUpdated;
 
     public BookInformation(){
@@ -29,6 +30,7 @@ public class BookInformation {
         ratingsCount = 0;
         description = "";
         location = "";
+        imageURL = "";
         timeLastUpdated = "";
     }
 

@@ -77,6 +77,21 @@ public class BookJsonInterpreter {
                 book.averageRating = reader.nextDouble();
             } else if (name.equals("ratingsCount")) {
                 book.ratingsCount = reader.nextInt();
+            } else if (name.equals("imageLinks")){
+                reader.beginObject();
+                    String thumbnail = "";
+                    boolean seenFirst = false;
+                    while (reader.hasNext()) {
+                        String imageName = reader.nextName();
+                        if(seenFirst == false){
+                            seenFirst = true;
+                            thumbnail = reader.nextString();
+                        } else if(imageName.equals("thumbnail")) {
+                            thumbnail = reader.nextString();
+                        }
+                    }
+                    book.imageURL = thumbnail;
+                reader.endObject();
             } else {
                 reader.skipValue();
             }

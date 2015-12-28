@@ -6,10 +6,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 public class DataViewActivity extends AppCompatActivity {
     private ListView listView;
@@ -23,12 +21,12 @@ public class DataViewActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.data_list_view);
             Cursor dataResults = Database.getAllBooks(getApplicationContext());
-            Log.e("NUM RESULTS", String.valueOf(dataResults.getCount()));
         if(dataResults.getCount() != 0) {
-            String[] columns = new String[]{BookScannerContract.Books.COLUMN_NAME_TITLE};
-            int[] to = new int[]{R.id.book_title_entry};
+            listView.setAdapter(new DataCursorAdapter(this, dataResults, 0));
+            /* String[] columns = new String[]{BookScannerContract.Books.COLUMN_NAME_TITLE, BookScannerContract.Books.COLUMN_NAME_SUBTITLE};
+            int[] to = new int[]{R.id.book_title_entry, R.id.book_location_entry};
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.list_item, dataResults, columns, to, 0);
-            listView.setAdapter(adapter);
+            listView.setAdapter(adapter);*/
         }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -19,6 +19,7 @@ public final class BookScannerContract {
         public static final String COLUMN_NAME_RATINGS_COUNT = "ratingsCount";
         public static final String COLUMN_NAME_DATE_SCANNED = "dateScanned";
         public static final String COLUMN_NAME_LOCATION_ID = "locationId";
+        public static final String COLUMN_NAME_IMAGE_URL = "imageUrl";
     }
 
     public static abstract class Authors implements BaseColumns{

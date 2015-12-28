@@ -26,7 +26,8 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
             BookScannerContract.Books.COLUMN_NAME_AVERAGE_RATING + REAL_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_RATINGS_COUNT + INTEGER_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_DATE_SCANNED + TEXT_TYPE + COMMA_SEP +
-            BookScannerContract.Books.COLUMN_NAME_LOCATION_ID + INTEGER_TYPE +
+            BookScannerContract.Books.COLUMN_NAME_LOCATION_ID + INTEGER_TYPE + COMMA_SEP +
+            BookScannerContract.Books.COLUMN_NAME_IMAGE_URL + TEXT_TYPE +
             " );";
 
     private static final String SQL_CREATE_AUTHORS_OF_BOOKS_TABLE =

@@ -36,6 +36,7 @@ public class Database {
                 BookScannerContract.Books.COLUMN_NAME_AVERAGE_RATING + " as avRating, " +
                 BookScannerContract.Books.COLUMN_NAME_RATINGS_COUNT + " as ratingsCount, " +
                 BookScannerContract.Books.COLUMN_NAME_DATE_SCANNED + " as dateScanned, " +
+                BookScannerContract.Books.COLUMN_NAME_IMAGE_URL + " as imageUrl, " +
                 BookScannerContract.Location.COLUMN_NAME_BOOK_LOCATION + " as location from " +
                 BookScannerContract.Books.TABLE_NAME + " as t1 inner join " +
                 BookScannerContract.Location.TABLE_NAME + " as t2 on t1." + BookScannerContract.Books.COLUMN_NAME_LOCATION_ID + " = t2." +
@@ -64,6 +65,7 @@ public class Database {
         values.put(BookScannerContract.Books.COLUMN_NAME_PAGE_COUNT, book.pageCount);
         values.put(BookScannerContract.Books.COLUMN_NAME_RATINGS_COUNT, book.ratingsCount);
         values.put(BookScannerContract.Books.COLUMN_NAME_DATE_SCANNED, System.currentTimeMillis());
+        values.put(BookScannerContract.Books.COLUMN_NAME_IMAGE_URL, book.imageURL);
         ContentValues locationValue = new ContentValues();
         locationValue.put(BookScannerContract.Location.COLUMN_NAME_BOOK_LOCATION, book.location);
         long locationID = db.insertWithOnConflict(BookScannerContract.Location.TABLE_NAME, "null", locationValue, SQLiteDatabase.CONFLICT_IGNORE);

@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -25,12 +24,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-//TODO: Handle database with non-isbn barcodes. Inform user of book not found.
+//TODO: Handle database with non-isbn barcodes. Inform user of book not found. Add barcode library.
+//TODO: Adjust for different screen sizes. Deal with no internet connection.
+//TODO: Figure out activity result fail error. Figure out error on exiting app.
+
 
 public class MainActivity extends AppCompatActivity{
     private ArrayList<BookInformation> books;
     private Button scanBtn, viewBtn;
-    private TextView formatTxt, contentTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,6 @@ public class MainActivity extends AppCompatActivity{
 
         scanBtn = (Button)findViewById(R.id.scan_button);
         viewBtn = (Button)findViewById(R.id.view_books_button);
-        formatTxt = (TextView)findViewById(R.id.scan_format);
-        contentTxt = (TextView)findViewById(R.id.scan_content);
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,11 +76,8 @@ public class MainActivity extends AppCompatActivity{
         if(scanningResult != null){
             if(resultCode == RESULT_OK) {
                 String scanContent = scanningResult.getContents();
-                String scanFormat = scanningResult.getFormatName();
                 BookInformation book = new BookInformation();
                 book.isbn = scanContent;
-                formatTxt.setText("FORMAT: " + scanFormat);
-                contentTxt.setText("CONTENT: " + scanContent);
                 books.add(book);
                 IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
                 scanIntegrator.initiateScan();
@@ -127,7 +123,6 @@ public class MainActivity extends AppCompatActivity{
                     String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + book.isbn;
                     is = getBookSearchResults(url);
                     if (readJsonStream(is, book)) {
-                        //Log.e("BOOK", books[0].toString());
                         Database.insertBook(book, MainActivity.this.getApplicationContext());
                     }
                 } catch (Exception e) {
