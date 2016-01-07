@@ -23,6 +23,10 @@
         <activity
             android:name=".DataViewActivity"
             android:label="@string/title_activity_data_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BookEditActivity"
+            android:label="@string/title_activity_book_edit"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

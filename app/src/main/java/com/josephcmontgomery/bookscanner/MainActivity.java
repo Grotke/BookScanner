@@ -27,11 +27,15 @@ import java.util.ArrayList;
 //TODO: Handle database with non-isbn barcodes. Inform user of book not found. Add barcode library.
 //TODO: Adjust for different screen sizes. Deal with no internet connection.
 //TODO: Figure out activity result fail error. Figure out error on exiting app.
-
-
+//TODO: Guard against SQL injection. Change database to persist.
+//TODO: Check security issues for mobile apps.
+//TODO: Get API key for Google Books. Check how it handles a lot of requests.
+//TODO: Profile performance on memory and cpu, and download size.
+//TODO: Add way to manually add book. Add way to add location and view all books scanned.
+//TODO: Make sure back button doesn't take to previous screens on book location editing screen.
 public class MainActivity extends AppCompatActivity{
     private ArrayList<BookInformation> books;
-    private Button scanBtn, viewBtn;
+    private Button scanBtn, viewBtn, editBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
 
         scanBtn = (Button)findViewById(R.id.scan_button);
         viewBtn = (Button)findViewById(R.id.view_books_button);
+        editBtn = (Button)findViewById(R.id.edit_button);
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +66,17 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.getId() == R.id.edit_button){
+                    Intent intent = new Intent(MainActivity.this, BookEditActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
