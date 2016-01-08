@@ -17,7 +17,24 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <Button
+                android:id="@+id/bookedit_save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:text="SAVE"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@drawable/save_button"/>
+            <Button
+                android:id="@+id/bookedit_discard_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:text="DISCARD"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:background="@drawable/discard_button"/>
+            </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 

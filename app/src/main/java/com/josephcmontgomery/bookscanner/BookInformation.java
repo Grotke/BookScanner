@@ -1,11 +1,12 @@
 package com.josephcmontgomery.bookscanner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Joseph on 12/15/2015.
  */
-public class BookInformation {
+public class BookInformation implements Serializable{
     public String title;
     public String subtitle;
     public ArrayList<String> authors;

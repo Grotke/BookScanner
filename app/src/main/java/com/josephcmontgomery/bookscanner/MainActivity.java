@@ -36,6 +36,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity{
     private ArrayList<BookInformation> books;
     private Button scanBtn, viewBtn, editBtn;
+    private static final int BOOK_EDIT_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,10 @@ public class MainActivity extends AppCompatActivity{
                 BookInformation book = new BookInformation();
                 book.isbn = scanContent;
                 books.add(book);
+                new GetBookByISBN().execute(books);
+                Intent bookEditIntent = new Intent(this, BookEditActivity.class);
+                bookEditIntent.putExtra("BOOK INFO", books.remove(0));
+                startActivityForResult(bookEditIntent, 1);
                 IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
                 scanIntegrator.initiateScan();
             }
@@ -150,6 +155,12 @@ public class MainActivity extends AppCompatActivity{
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Intent bookEditIntent = new Intent(MainActivity.this, BookEditActivity.class);
+            bookEditIntent.putExtra("BOOK INFO", books.remove(0));
+            startActivityForResult(bookEditIntent, 1);
+        }
 
         private InputStream getBookSearchResults(String inUrl) throws Exception{
             URL outUrl = new URL(inUrl);

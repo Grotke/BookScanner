@@ -20,6 +20,22 @@ public class BookEditActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        /*Button dontSaveBtn = new Button(getApplicationContext());
+        Button saveBtn = new Button(getApplicationContext());
+        toolbar.addView(saveBtn);
+        toolbar.addView(dontSaveBtn);
+        dontSaveBtn.setGravity(Gravity.RIGHT);
+        //dontSaveBtn.setBackgroundColor(Color.RED);
+        dontSaveBtn.setText("DISCARD");
+        saveBtn.setGravity(Gravity.RIGHT);
+        //saveBtn.setBackgroundColor(Color.GREEN);
+        saveBtn.setText("SAVE");
+        Toolbar.LayoutParams params = new Toolbar.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.RIGHT;
+        saveBtn.setLayoutParams(params);
+        dontSaveBtn.setLayoutParams(params);*/
         EditText edit = (EditText) findViewById(R.id.bookedit_book_title);
         edit.setInputType(InputType.TYPE_NULL);
         EditText location = (EditText) findViewById(R.id.bookedit_location_edit);
