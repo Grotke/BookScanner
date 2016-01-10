@@ -16,16 +16,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:background="@drawable/menu_button"
         android:text="@string/scan" />
     <Button android:id="@+id/view_books_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:background="@drawable/menu_button"
         android:text="View Books" />
     <Button
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/view_books_button"
+        android:textColor="#ffffff"
+        android:background="@drawable/menu_button"
         android:text="View Book Edit"/>
 </LinearLayout>
