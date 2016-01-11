@@ -18,7 +18,7 @@ public final class BookScannerContract {
         public static final String COLUMN_NAME_AVERAGE_RATING = "averageRating";
         public static final String COLUMN_NAME_RATINGS_COUNT = "ratingsCount";
         public static final String COLUMN_NAME_DATE_SCANNED = "dateScanned";
-        public static final String COLUMN_NAME_LOCATION_ID = "locationId";
+        public static final String COLUMN_NAME_LOCATION = "location";
         public static final String COLUMN_NAME_IMAGE_URL = "imageUrl";
     }
 
@@ -42,10 +42,5 @@ public final class BookScannerContract {
         public static final String TABLE_NAME = "bookCategories";
         public static final String COLUMN_NAME_BOOK_ID = "bookId";
         public static final String COLUMN_NAME_CATEGORY_ID = "categoryId";
-    }
-
-    public static abstract class Location implements BaseColumns{
-        public static final String TABLE_NAME = "location";
-        public static final String COLUMN_NAME_BOOK_LOCATION = "bookLocation";
     }
 }

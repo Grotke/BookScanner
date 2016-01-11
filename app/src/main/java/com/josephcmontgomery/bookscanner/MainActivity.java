@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
-        editBtn.setOnClickListener(new View.OnClickListener() {
+        /*editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(v.getId() == R.id.edit_button){
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity{
                     startActivity(intent);
                 }
             }
-        });
+        }); */
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -96,16 +96,14 @@ public class MainActivity extends AppCompatActivity{
                 BookInformation book = new BookInformation();
                 book.isbn = scanContent;
                 books.add(book);
-                new GetBookByISBN().execute(books);
-                Intent bookEditIntent = new Intent(this, BookEditActivity.class);
-                bookEditIntent.putExtra("BOOK INFO", books.remove(0));
-                startActivityForResult(bookEditIntent, 1);
-                IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
-                scanIntegrator.initiateScan();
+                new GetBookByISBN().execute(book);
             }
-            else if(resultCode == RESULT_CANCELED){
-                new GetBookByISBN().execute(books);
-            }
+        }
+        else if (requestCode == BOOK_EDIT_REQUEST && resultCode == RESULT_OK){
+            BookInformation book = (BookInformation) intent.getSerializableExtra("bookInfo");
+            Database.insertBook(book, getApplicationContext());
+            IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
+            scanIntegrator.initiateScan();
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT);
@@ -135,12 +133,12 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private class GetBookByISBN extends AsyncTask<ArrayList<BookInformation>,Void,Void>{
-        protected Void doInBackground(ArrayList<BookInformation>... books) {
+    private class GetBookByISBN extends AsyncTask<BookInformation,Void,BookInformation>{
+        protected BookInformation doInBackground(BookInformation... books) {
             InputStream is;
-            for(int i = 0; i < books[0].size(); i++) {
+            for(int i = 0; i < books.length; i++) {
                 try {
-                    BookInformation book = books[0].get(i);
+                    BookInformation book = books[0];
                     String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + book.isbn;
                     is = getBookSearchResults(url);
                     if (readJsonStream(is, book)) {
@@ -152,14 +150,14 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
             }
-            return null;
+            return books[0];
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(BookInformation book) {
             Intent bookEditIntent = new Intent(MainActivity.this, BookEditActivity.class);
-            bookEditIntent.putExtra("BOOK INFO", books.remove(0));
-            startActivityForResult(bookEditIntent, 1);
+            bookEditIntent.putExtra("bookInfo", book);
+            startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
         }
 
         private InputStream getBookSearchResults(String inUrl) throws Exception{

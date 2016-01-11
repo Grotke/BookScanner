@@ -28,7 +28,7 @@ public class DataCursorAdapter extends CursorAdapter {
         TextView location = (TextView) view.findViewById(R.id.book_location_entry);
         final ImageView icon = (ImageView) view.findViewById(R.id.book_cover_image);
         String strTitle = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_TITLE));
-        String strLocation = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_SUBTITLE));
+        String strLocation = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_LOCATION));
         String subTitle = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_SUBTITLE));
         final String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_IMAGE_URL));
         String finalStr = strTitle;

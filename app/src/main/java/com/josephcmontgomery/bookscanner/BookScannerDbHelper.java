@@ -26,7 +26,7 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
             BookScannerContract.Books.COLUMN_NAME_AVERAGE_RATING + REAL_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_RATINGS_COUNT + INTEGER_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_DATE_SCANNED + TEXT_TYPE + COMMA_SEP +
-            BookScannerContract.Books.COLUMN_NAME_LOCATION_ID + INTEGER_TYPE + COMMA_SEP +
+            BookScannerContract.Books.COLUMN_NAME_LOCATION + TEXT_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_IMAGE_URL + TEXT_TYPE +
             " );";
 
@@ -42,12 +42,6 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
                     BookScannerContract.Categories._ID + " INTEGER PRIMARY KEY autoincrement, " +
                     BookScannerContract.Categories.COLUMN_NAME_CATEGORY + TEXT_TYPE +
     " );";
-
-    private static final String SQL_CREATE_LOCATION_TABLE =
-            "CREATE TABLE " + BookScannerContract.Location.TABLE_NAME + " (" +
-                    BookScannerContract.Location._ID + " INTEGER PRIMARY KEY autoincrement, " +
-                    BookScannerContract.Location.COLUMN_NAME_BOOK_LOCATION + TEXT_TYPE +
-                    " );";
 
     private static final String SQL_CREATE_BOOK_CATEGORIES_TABLE =
             "CREATE TABLE " + BookScannerContract.BookCategories.TABLE_NAME + " (" +
@@ -78,8 +72,7 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
     private void createAllTables(SQLiteDatabase db){
         Log.e("CREATION", "Creating Stuff");
         String[] SQL_CREATE_ENTRIES = {SQL_CREATE_BOOKS_TABLE, SQL_CREATE_BOOK_CATEGORIES_TABLE,
-                SQL_CREATE_AUTHORS_OF_BOOKS_TABLE, SQL_CREATE_CATEGORIES_TABLE,
-                SQL_CREATE_LOCATION_TABLE, SQL_CREATE_AUTHORS_TABLE};
+                SQL_CREATE_AUTHORS_OF_BOOKS_TABLE, SQL_CREATE_CATEGORIES_TABLE, SQL_CREATE_AUTHORS_TABLE};
         for(String query: SQL_CREATE_ENTRIES){
             db.execSQL(query);
         }
