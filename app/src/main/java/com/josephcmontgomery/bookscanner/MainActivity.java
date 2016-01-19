@@ -140,8 +140,12 @@ public class MainActivity extends AppCompatActivity{
         }
 
         private BookInformation parseJsonStream(InputStream inStream, String isbn) throws Exception {
-            try (JsonReader reader = new JsonReader(new InputStreamReader(inStream, "UTF-8"))) {
+            JsonReader reader = new JsonReader(new InputStreamReader(inStream, "UTF-8"));
+            try {
                 return BookJsonParser.processSearchResult(reader, isbn);
+            }
+            finally{
+                reader.close();
             }
         }
 
