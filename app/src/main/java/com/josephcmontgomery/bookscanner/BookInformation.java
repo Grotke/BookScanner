@@ -35,20 +35,6 @@ public class BookInformation implements Serializable{
         timeLastUpdated = "";
     }
 
-    public BookInformation(String title, String subtitle, ArrayList<String> authors, String isbn, int pageCount, ArrayList<String> categories, double averageRating, int ratingsCount, String description, String location, String timeLastUpdated){
-        this.title = title;
-        this.subtitle = subtitle;
-        this.authors = authors;
-        this.isbn = isbn;
-        this.pageCount = pageCount;
-        this.categories = categories;
-        this.averageRating = averageRating;
-        this.ratingsCount = ratingsCount;
-        this.description = description;
-        this.location = location;
-        this.timeLastUpdated = timeLastUpdated;
-    }
-
     @Override
     public String toString(){
         return "ISBN: " + isbn + "\nTITLE: " + title + "\nSUBTITLE: " + subtitle + "\nAUTHORS: " + convertListToString(authors) + "\nDESCRIPTION: " + description + "\nPAGE COUNT: "+ pageCount+ "\nCATEGORIES: " + convertListToString(categories) + "\nAVERAGE RATING: " + averageRating + "\nRATINGS COUNT: " + ratingsCount + "\nLOCATION: " + location + "\nTIME LAST UPDATED: " + timeLastUpdated;

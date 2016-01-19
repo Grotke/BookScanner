@@ -3,8 +3,6 @@ package com.josephcmontgomery.bookscanner;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
@@ -22,7 +20,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 //TODO: Handle database with non-isbn barcodes. Inform user of book not found. Add barcode library.
 //TODO: Adjust for different screen sizes. Deal with no internet connection.
@@ -34,8 +31,7 @@ import java.util.ArrayList;
 //TODO: Add way to manually add book. Add way to add location and view all books scanned.
 //TODO: Make sure back button doesn't take to previous screens on book location editing screen.
 public class MainActivity extends AppCompatActivity{
-    private ArrayList<BookInformation> books;
-    private Button scanBtn, viewBtn, editBtn;
+    private Button scanBtn, viewBtn;
     private static final int BOOK_EDIT_REQUEST = 1;
 
     @Override
@@ -47,12 +43,10 @@ public class MainActivity extends AppCompatActivity{
 
         scanBtn = (Button)findViewById(R.id.scan_button);
         viewBtn = (Button)findViewById(R.id.view_books_button);
-        editBtn = (Button)findViewById(R.id.edit_button);
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(v.getId() == R.id.scan_button){
-                    books = new ArrayList<BookInformation>();
                     IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
                     scanIntegrator.initiateScan();
                 }
@@ -67,25 +61,6 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
-        /*editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v.getId() == R.id.edit_button){
-                    Intent intent = new Intent(MainActivity.this, BookEditActivity.class);
-                    startActivity(intent);
-                }
-            }
-        }); */
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
@@ -95,7 +70,6 @@ public class MainActivity extends AppCompatActivity{
                 String scanContent = scanningResult.getContents();
                 BookInformation book = new BookInformation();
                 book.isbn = scanContent;
-                books.add(book);
                 new GetBookByISBN().execute(book);
             }
         }
@@ -141,9 +115,7 @@ public class MainActivity extends AppCompatActivity{
                     BookInformation book = books[0];
                     String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + book.isbn;
                     is = getBookSearchResults(url);
-                    if (readJsonStream(is, book)) {
-                        Database.insertBook(book, MainActivity.this.getApplicationContext());
-                    }
+                    readJsonStream(is, book);
                 } catch (Exception e) {
                     if (e.getMessage() != null) {
                         Log.e("EXCEPTION", e.getMessage());
