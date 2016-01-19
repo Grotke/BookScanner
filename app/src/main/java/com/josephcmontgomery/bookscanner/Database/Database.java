@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.josephcmontgomery.bookscanner.BookInformation;
+import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 /**
  * Created by Joseph on 12/15/2015.
  */

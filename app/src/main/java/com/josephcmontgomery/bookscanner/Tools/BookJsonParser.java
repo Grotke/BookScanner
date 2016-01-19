@@ -2,8 +2,6 @@ package com.josephcmontgomery.bookscanner.Tools;
 
 import android.util.JsonReader;
 
-import com.josephcmontgomery.bookscanner.BookInformation;
-
 public class BookJsonParser {
     public static BookInformation processSearchResult(JsonReader reader, String isbn) throws Exception{
         BookInformation book = new BookInformation();
