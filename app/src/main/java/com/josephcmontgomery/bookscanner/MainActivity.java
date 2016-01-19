@@ -1,5 +1,6 @@
 package com.josephcmontgomery.bookscanner;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.josephcmontgomery.bookscanner.Database.Database;
-import com.josephcmontgomery.bookscanner.Tools.BookJsonInterpreter;
+import com.josephcmontgomery.bookscanner.Tools.BookJsonParser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,31 +34,45 @@ import java.net.URL;
 //TODO: Add way to manually add book. Add way to add location and view all books scanned.
 //TODO: Make sure back button doesn't take to previous screens on book location editing screen.
 public class MainActivity extends AppCompatActivity{
-    private Button scanBtn, viewBtn;
     private static final int BOOK_EDIT_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setUpToolbar();
+        setUpMenuButtons();
+    }
+
+    private void setUpToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
 
-        scanBtn = (Button)findViewById(R.id.scan_button);
-        viewBtn = (Button)findViewById(R.id.view_books_button);
+    private void setUpMenuButtons(){
+        setUpScanButton();
+        setUpViewButton();
+    }
+
+    private void setUpScanButton(){
+        Button scanBtn = (Button)findViewById(R.id.scan_button);
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId() == R.id.scan_button){
-                    IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
-                    scanIntegrator.initiateScan();
+                if (v.getId() == R.id.scan_button) {
+                    startScan(MainActivity.this);
                 }
             }
         });
+    }
+
+    private void setUpViewButton(){
+        Button viewBtn = (Button)findViewById(R.id.view_books_button);
         viewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId() == R.id.view_books_button){
+                if (v.getId() == R.id.view_books_button) {
                     Intent intent = new Intent(MainActivity.this, DataViewActivity.class);
                     startActivity(intent);
                 }
@@ -68,22 +83,85 @@ public class MainActivity extends AppCompatActivity{
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if(scanningResult != null){
-            if(resultCode == RESULT_OK) {
-                String scanContent = scanningResult.getContents();
-                BookInformation book = new BookInformation();
-                book.isbn = scanContent;
-                new GetBookByISBN().execute(book);
-            }
+            processScanResult(resultCode, scanningResult);
         }
-        else if (requestCode == BOOK_EDIT_REQUEST && resultCode == RESULT_OK){
-            BookInformation book = (BookInformation) intent.getSerializableExtra("bookInfo");
-            Database.insertBook(book, getApplicationContext());
-            IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
-            scanIntegrator.initiateScan();
+        else if (requestCode == BOOK_EDIT_REQUEST){
+            processEditResult(resultCode, intent);
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
+        }
+    }
+
+    private void processScanResult(int resultCode, IntentResult scanningResult){
+        if(resultCode == RESULT_OK) {
+            String isbn = scanningResult.getContents();
+            new GetBookByISBN().execute(isbn);
+        }
+    }
+
+    private void processEditResult(int resultCode, Intent intent){
+        if(resultCode == RESULT_OK) {
+            BookInformation book = (BookInformation) intent.getSerializableExtra("bookInfo");
+            Database.insertBook(book, getApplicationContext());
+        }
+        startScan(MainActivity.this);
+    }
+
+    private void startScan(Activity launchActivity){
+        IntentIntegrator scanIntegrator = new IntentIntegrator(launchActivity);
+        scanIntegrator.initiateScan();
+    }
+
+    private class GetBookByISBN extends AsyncTask<String,Void,BookInformation>{
+        protected BookInformation doInBackground(String... isbns) {
+            InputStream inStream;
+            BookInformation book = null;
+            for(String isbn: isbns) {
+                try {
+                    String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+                    inStream = getBookSearchResults(url);
+                    book = parseJsonStream(inStream, isbn);
+                } catch (Exception e) {
+                    if (e.getMessage() != null) {
+                        Log.e("EXCEPTION", e.getMessage());
+                    }
+                }
+            }
+            return book;
+        }
+
+        @Override
+        protected void onPostExecute(BookInformation book) {
+            Intent bookEditIntent = new Intent(MainActivity.this, BookEditActivity.class);
+            bookEditIntent.putExtra("bookInfo", book);
+            startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
+        }
+
+        private BookInformation parseJsonStream(InputStream inStream, String isbn) throws Exception {
+            try (JsonReader reader = new JsonReader(new InputStreamReader(inStream, "UTF-8"))) {
+                return BookJsonParser.processSearchResult(reader, isbn);
+            }
+        }
+
+        private InputStream getBookSearchResults(String inUrl) throws Exception{
+            HttpURLConnection conn = setUpHttpConnection(inUrl);
+            // Starts the query
+            conn.connect();
+            int response = conn.getResponseCode();
+            Log.d("RESPONSE CODE", "The response is: " + response);
+            return conn.getInputStream();
+        }
+
+        private HttpURLConnection setUpHttpConnection(String url) throws Exception {
+            URL outUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) outUrl.openConnection();
+            conn.setReadTimeout(10000 /* milliseconds */);
+            conn.setConnectTimeout(15000 /* milliseconds */);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            return conn;
         }
     }
 
@@ -107,54 +185,5 @@ public class MainActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private class GetBookByISBN extends AsyncTask<BookInformation,Void,BookInformation>{
-        protected BookInformation doInBackground(BookInformation... books) {
-            InputStream is;
-            for(int i = 0; i < books.length; i++) {
-                try {
-                    BookInformation book = books[0];
-                    String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + book.isbn;
-                    is = getBookSearchResults(url);
-                    readJsonStream(is, book);
-                } catch (Exception e) {
-                    if (e.getMessage() != null) {
-                        Log.e("EXCEPTION", e.getMessage());
-                    }
-                }
-            }
-            return books[0];
-        }
-
-        @Override
-        protected void onPostExecute(BookInformation book) {
-            Intent bookEditIntent = new Intent(MainActivity.this, BookEditActivity.class);
-            bookEditIntent.putExtra("bookInfo", book);
-            startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
-        }
-
-        private InputStream getBookSearchResults(String inUrl) throws Exception{
-            URL outUrl = new URL(inUrl);
-            HttpURLConnection conn = (HttpURLConnection) outUrl.openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            // Starts the query
-            conn.connect();
-            int response = conn.getResponseCode();
-            Log.d("RESPONSE CODE", "The response is: " + response);
-            return conn.getInputStream();
-        }
-
-        private boolean readJsonStream(InputStream in, BookInformation book) throws Exception {
-            JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-            try {
-                return BookJsonInterpreter.processSearchResult(reader, book);
-            } finally {
-                reader.close();
-            }
-        }
     }
 }
