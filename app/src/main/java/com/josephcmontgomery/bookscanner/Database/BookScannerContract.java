@@ -2,9 +2,6 @@ package com.josephcmontgomery.bookscanner.Database;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by Joseph on 12/14/2015.
- */
 public final class BookScannerContract {
     public BookScannerContract(){}
 
