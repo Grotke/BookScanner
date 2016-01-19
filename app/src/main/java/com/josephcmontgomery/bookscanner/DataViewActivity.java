@@ -10,19 +10,25 @@ import com.josephcmontgomery.bookscanner.Database.Database;
 
 public class DataViewActivity extends AppCompatActivity {
     private ListView listView;
+    private static int NO_FLAGS = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        setUpToolbar();
 
         listView = (ListView) findViewById(R.id.data_list_view);
-            Cursor dataResults = Database.getAllBooks(getApplicationContext());
+        Cursor dataResults = Database.getAllBooks(getApplicationContext());
         if(dataResults.getCount() != 0) {
-            listView.setAdapter(new DataCursorAdapter(this, dataResults, 0));
+            listView.setAdapter(new DataCursorAdapter(this, dataResults, NO_FLAGS));
         }
+    }
+
+    private void setUpToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
 }
