@@ -1,7 +1,9 @@
-package com.josephcmontgomery.bookscanner;
+package com.josephcmontgomery.bookscanner.Tools;
 
 import android.util.JsonReader;
 import android.util.Log;
+
+import com.josephcmontgomery.bookscanner.BookInformation;
 
 /**
  * Created by Joseph on 12/11/2015.

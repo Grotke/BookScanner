@@ -1,4 +1,4 @@
-package com.josephcmontgomery.bookscanner;
+package com.josephcmontgomery.bookscanner.Tools;
 
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;

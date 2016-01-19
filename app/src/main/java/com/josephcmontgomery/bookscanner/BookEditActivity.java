@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
+
 public class BookEditActivity extends AppCompatActivity {
     private Button saveBtn, discardBtn;
     private BookInformation book;

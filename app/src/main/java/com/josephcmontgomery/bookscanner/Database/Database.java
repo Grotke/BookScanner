@@ -1,10 +1,11 @@
-package com.josephcmontgomery.bookscanner;
+package com.josephcmontgomery.bookscanner.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-//TODO: Push to Github. Fix database posting multiple records.
+
+import com.josephcmontgomery.bookscanner.BookInformation;
 /**
  * Created by Joseph on 12/15/2015.
  */
@@ -23,7 +24,7 @@ public class Database {
 
     public static Cursor getAllBooks(Context context){
         String getAllBooksQuery = "select " +
-                "t1."+BookScannerContract.Books._ID + " as _id, " +
+                "t1."+ BookScannerContract.Books._ID + " as _id, " +
                 BookScannerContract.Books.COLUMN_NAME_ISBN + " as isbn, " +
                 BookScannerContract.Books.COLUMN_NAME_TITLE + " as title, "+
                 BookScannerContract.Books.COLUMN_NAME_SUBTITLE + " as subtitle, "+

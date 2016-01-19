@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.josephcmontgomery.bookscanner.Database.Database;
+import com.josephcmontgomery.bookscanner.Tools.BookJsonInterpreter;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

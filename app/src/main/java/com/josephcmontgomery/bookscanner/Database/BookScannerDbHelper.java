@@ -1,4 +1,4 @@
-package com.josephcmontgomery.bookscanner;
+package com.josephcmontgomery.bookscanner.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 
+import com.josephcmontgomery.bookscanner.Database.Database;
+
 public class DataViewActivity extends AppCompatActivity {
     private ListView listView;
 

@@ -9,6 +9,9 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.josephcmontgomery.bookscanner.Database.BookScannerContract;
+import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
+
 /**
  * Created by Joseph on 12/27/2015.
  */
