@@ -13,17 +13,17 @@ import java.util.HashMap;
 public class ImageFetcher {
     private static HashMap<String, Drawable> cache = new HashMap<String, Drawable>();
 
-    private static void insertDrawable(String isbn, Drawable image){
-        cache.put(isbn, image);
+    private static void insertDrawable(String imageUrl, Drawable image){
+        cache.put(imageUrl, image);
     }
 
-    private static Drawable getDrawable(String isbn){
-        return cache.get(isbn);
+    private static Drawable getDrawable(String imageUrl){
+        return cache.get(imageUrl);
     }
 
-    public static void loadImage(final String isbn, final String imageUrl, final ImageView image){
-        if(cache.containsKey(isbn)){
-            image.setImageDrawable(getDrawable(isbn));
+    public static void loadImage(final String imageUrl, final ImageView image){
+        if(cache.containsKey(imageUrl)){
+            image.setImageDrawable(getDrawable(imageUrl));
         }
         else {
             new AsyncTask<Void, Void, Drawable>() {
@@ -43,7 +43,7 @@ public class ImageFetcher {
                 @Override
                 protected void onPostExecute(Drawable result) {
                     if (thumb_d != null) {
-                        ImageFetcher.insertDrawable(isbn, thumb_d);
+                        ImageFetcher.insertDrawable(imageUrl, thumb_d);
                         image.setImageDrawable(thumb_d);
                     }
                 }

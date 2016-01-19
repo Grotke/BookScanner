@@ -12,9 +12,6 @@ import android.widget.TextView;
 import com.josephcmontgomery.bookscanner.Database.BookScannerContract;
 import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 
-/**
- * Created by Joseph on 12/27/2015.
- */
 public class DataCursorAdapter extends CursorAdapter {
     public DataCursorAdapter(Context context, Cursor cursor, int flags){
         super(context,cursor,flags);
@@ -22,27 +19,42 @@ public class DataCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        setImage(view, cursor);
+        setLocation(view, cursor);
+        setTitle(view, cursor);
+    }
+
+    private void setImage(View view, Cursor cursor){
         final ImageView icon = (ImageView) view.findViewById(R.id.book_cover_image);
-        String isbn = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_ISBN));
         final String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_IMAGE_URL));
-        ImageFetcher.loadImage(isbn, imageUrl, icon);
-        TextView title = (TextView) view.findViewById(R.id.book_title_entry);
+        ImageFetcher.loadImage(imageUrl, icon);
+    }
+
+    private void setLocation(View view, Cursor cursor){
         TextView location = (TextView) view.findViewById(R.id.book_location_entry);
-        String strTitle = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_TITLE));
         String strLocation = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_LOCATION));
-        String subTitle = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_SUBTITLE));
-        String finalStr = strTitle;
-        if(!subTitle.equals("")){
-            finalStr = strTitle + "\n" + subTitle;
-        }
-        title.setText(finalStr);
         location.setText(strLocation);
+    }
+
+    private void setTitle(View view, Cursor cursor){
+        TextView title = (TextView) view.findViewById(R.id.book_title_entry);
+        String strTitle = buildTitle(cursor);
+        title.setText(strTitle);
+    }
+
+    private String buildTitle(Cursor cursor){
+        String title = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_TITLE));
+        String subtitle = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_SUBTITLE));
+        String finalTitle = title;
+        if(!subtitle.isEmpty()){
+            finalTitle += "\n" + subtitle;
+        }
+
+        return finalTitle;
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
     }
-
-
 }
