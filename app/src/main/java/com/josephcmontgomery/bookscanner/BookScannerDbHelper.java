@@ -3,7 +3,6 @@ package com.josephcmontgomery.bookscanner;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by Joseph on 12/14/2015.
@@ -39,7 +38,6 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
     }
 
     private void createAllTables(SQLiteDatabase db){
-        Log.e("CREATION", "Creating Stuff");
         String[] SQL_CREATE_ENTRIES = {SQL_CREATE_BOOKS_TABLE};
         for(String query: SQL_CREATE_ENTRIES){
             db.execSQL(query);
@@ -51,7 +49,6 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        Log.e("OPENING", "Opened Database");
         super.onOpen(db);
     }
 

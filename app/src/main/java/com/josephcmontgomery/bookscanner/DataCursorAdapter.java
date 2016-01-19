@@ -2,7 +2,6 @@ package com.josephcmontgomery.bookscanner;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +30,7 @@ public class DataCursorAdapter extends CursorAdapter {
         String subTitle = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_SUBTITLE));
         String finalStr = strTitle;
         if(!subTitle.equals("")){
-            Log.e("SUBTITLE", subTitle);
             finalStr = strTitle + "\n" + subTitle;
-        }
-        else{
-            Log.e("BLANK", "This is blank");
         }
         title.setText(finalStr);
         location.setText(strLocation);
