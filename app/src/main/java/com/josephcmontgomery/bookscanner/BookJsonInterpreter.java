@@ -57,22 +57,10 @@ public class BookJsonInterpreter {
                 book.title = reader.nextString();
             } else if (name.equals("subtitle")) {
                 book.subtitle = reader.nextString();
-            } else if (name.equals("authors")) {
-                reader.beginArray();
-                while (reader.hasNext()) {
-                    book.authors.add(reader.nextString());
-                }
-                reader.endArray();
             } else if (name.equals("description")) {
                 book.description = reader.nextString();
             } else if (name.equals("pageCount")) {
                 book.pageCount = reader.nextInt();
-            } else if (name.equals("categories")) {
-                reader.beginArray();
-                while (reader.hasNext()) {
-                    book.categories.add(reader.nextString());
-                }
-                reader.endArray();
             } else if (name.equals("averageRating")) {
                 book.averageRating = reader.nextDouble();
             } else if (name.equals("ratingsCount")) {

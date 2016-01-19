@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.util.ArrayList;
 //TODO: Push to Github. Fix database posting multiple records.
 /**
  * Created by Joseph on 12/15/2015.
@@ -21,8 +19,6 @@ public class Database {
         }
 
         db.insertWithOnConflict(BookScannerContract.Books.TABLE_NAME, "null", packBookValues(book), SQLiteDatabase.CONFLICT_REPLACE);
-        insertMultipleRecords(book.authors, BookScannerContract.Authors.COLUMN_NAME_NAME, book.isbn, BookScannerContract.AuthorsOfBooks.COLUMN_NAME_BOOK_ID, BookScannerContract.AuthorsOfBooks.TABLE_NAME, BookScannerContract.AuthorsOfBooks.COLUMN_NAME_AUTHOR_ID, BookScannerContract.Authors.TABLE_NAME);
-        insertMultipleRecords(book.categories, BookScannerContract.Categories.COLUMN_NAME_CATEGORY, book.isbn, BookScannerContract.BookCategories.COLUMN_NAME_BOOK_ID, BookScannerContract.BookCategories.TABLE_NAME, BookScannerContract.BookCategories.COLUMN_NAME_CATEGORY_ID, BookScannerContract.Categories.TABLE_NAME);
     }
 
     public static Cursor getAllBooks(Context context){
@@ -83,24 +79,6 @@ public class Database {
         }
         result.moveToFirst();
         return result.getInt(0);
-    }
-
-    private static void insertMultipleRecords(ArrayList<String> values, String validationFieldName, String isbn, String bookIdFieldName, String targetTable, String targetFieldName, String validationTable){
-        ContentValues targetValue = new ContentValues();
-        String[] bookValue = {isbn};
-        String[] bookFieldName = {BookScannerContract.Books.COLUMN_NAME_ISBN};
-        long bookID = getIdIfValuesInTable(bookValue, bookFieldName, BookScannerContract.Books.TABLE_NAME);
-        if(bookID != -1) {
-            for (int i = 0; i < values.size(); i++) {
-                ContentValues validationValue = new ContentValues();
-                validationValue.put(validationFieldName, values.get(i));
-                long ID = db.insertWithOnConflict(validationTable, "null", validationValue, SQLiteDatabase.CONFLICT_IGNORE);
-
-                targetValue.put(bookIdFieldName, bookID);
-                targetValue.put(targetFieldName, ID);
-                db.insertWithOnConflict(targetTable, "null", targetValue, SQLiteDatabase.CONFLICT_IGNORE);
-            }
-        }
     }
 
     public static void close(){

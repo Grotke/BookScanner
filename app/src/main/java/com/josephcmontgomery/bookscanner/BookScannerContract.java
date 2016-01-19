@@ -21,26 +21,4 @@ public final class BookScannerContract {
         public static final String COLUMN_NAME_LOCATION = "location";
         public static final String COLUMN_NAME_IMAGE_URL = "imageUrl";
     }
-
-    public static abstract class Authors implements BaseColumns{
-        public static final String TABLE_NAME ="authors";
-        public static final String COLUMN_NAME_NAME = "name";
-    }
-
-    public static abstract class AuthorsOfBooks implements BaseColumns{
-        public static final String TABLE_NAME = "authorsOfBooks";
-        public static final String COLUMN_NAME_BOOK_ID = "bookId";
-        public static final String COLUMN_NAME_AUTHOR_ID = "authorId";
-    }
-
-    public static abstract class Categories implements BaseColumns{
-        public static final String TABLE_NAME = "categories";
-        public static final String COLUMN_NAME_CATEGORY = "category";
-    }
-
-    public static abstract class BookCategories implements BaseColumns{
-        public static final String TABLE_NAME = "bookCategories";
-        public static final String COLUMN_NAME_BOOK_ID = "bookId";
-        public static final String COLUMN_NAME_CATEGORY_ID = "categoryId";
-    }
 }

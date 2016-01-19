@@ -30,37 +30,6 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
             BookScannerContract.Books.COLUMN_NAME_IMAGE_URL + TEXT_TYPE +
             " );";
 
-    private static final String SQL_CREATE_AUTHORS_OF_BOOKS_TABLE =
-            "CREATE TABLE " + BookScannerContract.AuthorsOfBooks.TABLE_NAME + " (" +
-                    BookScannerContract.AuthorsOfBooks._ID + " INTEGER PRIMARY KEY autoincrement, " +
-                    BookScannerContract.AuthorsOfBooks.COLUMN_NAME_BOOK_ID + INTEGER_TYPE + COMMA_SEP +
-                    BookScannerContract.AuthorsOfBooks.COLUMN_NAME_AUTHOR_ID + INTEGER_TYPE +
-                    " );";
-
-    private static final String SQL_CREATE_CATEGORIES_TABLE =
-            "CREATE TABLE " + BookScannerContract.Categories.TABLE_NAME + " (" +
-                    BookScannerContract.Categories._ID + " INTEGER PRIMARY KEY autoincrement, " +
-                    BookScannerContract.Categories.COLUMN_NAME_CATEGORY + TEXT_TYPE +
-    " );";
-
-    private static final String SQL_CREATE_BOOK_CATEGORIES_TABLE =
-            "CREATE TABLE " + BookScannerContract.BookCategories.TABLE_NAME + " (" +
-                    BookScannerContract.BookCategories._ID + " INTEGER PRIMARY KEY autoincrement, " +
-                    BookScannerContract.BookCategories.COLUMN_NAME_BOOK_ID + INTEGER_TYPE + COMMA_SEP +
-                    BookScannerContract.BookCategories.COLUMN_NAME_CATEGORY_ID + INTEGER_TYPE +
-                    " );";
-
-    private static final String SQL_CREATE_AUTHORS_TABLE =
-            "CREATE TABLE " + BookScannerContract.Authors.TABLE_NAME + " (" +
-                    BookScannerContract.Authors._ID + " INTEGER PRIMARY KEY autoincrement, " +
-                    BookScannerContract.Authors.COLUMN_NAME_NAME + TEXT_TYPE +
-                    " );";
-
-    /*private static final String SQL_CREATE_ENTRIES = SQL_CREATE_BOOKS_TABLE + SQL_CREATE_BOOK_CATEGORIES_TABLE
-            + SQL_CREATE_AUTHORS_OF_BOOKS_TABLE + SQL_CREATE_CATEGORIES_TABLE
-            + SQL_CREATE_LOCATION_TABLE + SQL_CREATE_AUTHORS_TABLE;*/
-
-
     public BookScannerDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -71,16 +40,13 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
 
     private void createAllTables(SQLiteDatabase db){
         Log.e("CREATION", "Creating Stuff");
-        String[] SQL_CREATE_ENTRIES = {SQL_CREATE_BOOKS_TABLE, SQL_CREATE_BOOK_CATEGORIES_TABLE,
-                SQL_CREATE_AUTHORS_OF_BOOKS_TABLE, SQL_CREATE_CATEGORIES_TABLE, SQL_CREATE_AUTHORS_TABLE};
+        String[] SQL_CREATE_ENTRIES = {SQL_CREATE_BOOKS_TABLE};
         for(String query: SQL_CREATE_ENTRIES){
             db.execSQL(query);
         }
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        //db.execSQL(SQL_DELETE_ENTRIES);
-        //onCreate(db);
     }
 
     @Override

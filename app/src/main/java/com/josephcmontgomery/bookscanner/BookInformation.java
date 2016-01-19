@@ -9,10 +9,8 @@ import java.util.ArrayList;
 public class BookInformation implements Serializable{
     public String title;
     public String subtitle;
-    public ArrayList<String> authors;
     public String isbn;
     public int pageCount;
-    public ArrayList<String> categories;
     public double averageRating;
     public int ratingsCount;
     public String description;
@@ -23,10 +21,8 @@ public class BookInformation implements Serializable{
     public BookInformation(){
         title = "";
         subtitle = "";
-        authors = new ArrayList<String>();
         isbn = "";
         pageCount = 0;
-        categories = new ArrayList<String>();
         averageRating = 0;
         ratingsCount = 0;
         description = "";
@@ -37,7 +33,7 @@ public class BookInformation implements Serializable{
 
     @Override
     public String toString(){
-        return "ISBN: " + isbn + "\nTITLE: " + title + "\nSUBTITLE: " + subtitle + "\nAUTHORS: " + convertListToString(authors) + "\nDESCRIPTION: " + description + "\nPAGE COUNT: "+ pageCount+ "\nCATEGORIES: " + convertListToString(categories) + "\nAVERAGE RATING: " + averageRating + "\nRATINGS COUNT: " + ratingsCount + "\nLOCATION: " + location + "\nTIME LAST UPDATED: " + timeLastUpdated;
+        return "ISBN: " + isbn + "\nTITLE: " + title + "\nSUBTITLE: " + subtitle + "\nDESCRIPTION: " + description + "\nPAGE COUNT: "+ pageCount+ "\nAVERAGE RATING: " + averageRating + "\nRATINGS COUNT: " + ratingsCount + "\nLOCATION: " + location + "\nTIME LAST UPDATED: " + timeLastUpdated;
     }
 
     private String convertListToString(ArrayList<String> list){
