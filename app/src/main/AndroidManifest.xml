@@ -27,7 +27,7 @@
         <activity
             android:name=".BookEditActivity"
             android:label="@string/title_activity_book_edit"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

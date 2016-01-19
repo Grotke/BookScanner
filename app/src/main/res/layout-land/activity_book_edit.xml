@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
-                android:text="SAVE"
+                android:text="@string/save"
                 android:layout_marginRight="@dimen/_20sdp"
                 android:background="@drawable/save_button"/>
             <Button
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
-                android:text="DISCARD"
+                android:text="@string/discard"
                 android:layout_marginRight="@dimen/_30sdp"
                 android:background="@drawable/discard_button"/>
             </android.support.v7.widget.Toolbar>
