@@ -10,7 +10,7 @@ import com.josephcmontgomery.bookscanner.Database.Database;
 
 public class DataViewActivity extends AppCompatActivity {
     private ListView listView;
-    private static int NO_FLAGS = 0;
+    private final int NO_FLAGS = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

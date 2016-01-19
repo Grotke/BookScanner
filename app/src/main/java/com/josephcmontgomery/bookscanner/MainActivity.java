@@ -35,7 +35,7 @@ import java.net.URL;
 //TODO: Add way to manually add book. Add way to add location and view all books scanned.
 //TODO: Make sure back button doesn't take to previous screens on book location editing screen.
 public class MainActivity extends AppCompatActivity{
-    private static final int BOOK_EDIT_REQUEST = 1;
+    private final int BOOK_EDIT_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -17,50 +17,79 @@ import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 
 public class BookEditActivity extends AppCompatActivity {
-    private Button saveBtn, discardBtn;
-    private BookInformation book;
+    private final int RATING_BAR_COLOR = 0xffffc60b;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_edit);
+
+        setUpToolbar();
+
+        BookInformation book = (BookInformation)getIntent().getSerializableExtra("bookInfo");
+
+        setFields(book);
+
+        setUpSaveButton(book);
+        setUpDiscardButton();
+    }
+
+    private void setUpToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        EditText edit = (EditText) findViewById(R.id.bookedit_book_title);
-        edit.setInputType(InputType.TYPE_NULL);
-        EditText location = (EditText) findViewById(R.id.bookedit_location_edit);
-        location.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        RatingBar bar = (RatingBar) findViewById(R.id.bookedit_book_rating_bar);
-        DrawableCompat.setTint(bar.getProgressDrawable(), 0xffffc60b);
-        saveBtn = (Button) findViewById(R.id.bookedit_save_button);
-        discardBtn = (Button) findViewById(R.id.bookedit_discard_button);
-        book = (BookInformation)getIntent().getSerializableExtra("bookInfo");
-        setBookFields();
-        setButtonListeners();
     }
 
-    private void setBookFields(){
+    private void setFields(BookInformation book){
+        //Image first to give more time to possibly retrieve online.
+        setImage(book);
+        setTitleEdit(book);
+        setLocationEdit();
+        setRatingBar(book);
+        setISBN(book);
+        setNumRatings(book);
+    }
+
+    private void setImage(BookInformation book){
         ImageView icon = (ImageView) findViewById(R.id.bookedit_book_image);
-        ImageFetcher.loadImage(book.isbn, book.imageURL, icon);
-        EditText edit = (EditText) findViewById(R.id.bookedit_book_title);
-        edit.setInputType(InputType.TYPE_NULL);
+        ImageFetcher.loadImage(book.imageURL, icon);
+    }
+
+    private void setTitleEdit(BookInformation book){
+        //XML bugged, must set InputType in code.
+        EditText titleEdit = (EditText) findViewById(R.id.bookedit_book_title);
+        titleEdit.setInputType(InputType.TYPE_NULL);
+
         String title = book.title;
-        if(!book.subtitle.equals("")) {
+        if(!book.subtitle.isEmpty()) {
             title += ": " + book.subtitle;
         }
-        edit.setText(title);
-        EditText location = (EditText) findViewById(R.id.bookedit_location_edit);
-        location.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        RatingBar bar = (RatingBar) findViewById(R.id.bookedit_book_rating_bar);
-        bar.setRating((float) book.averageRating);
-        TextView isbn = (TextView) findViewById(R.id.bookedit_isbn);
-        isbn.setText("ISBN: " + book.isbn);
-        TextView numRatings = (TextView) findViewById(R.id.bookedit_book_rating);
-        numRatings.setText(String.valueOf(book.averageRating) + "/5.0 (" + String.valueOf(book.ratingsCount) + " reviews)");
-        DrawableCompat.setTint(bar.getProgressDrawable(), 0xffffc60b);
+        titleEdit.setText(title);
     }
 
-    private void setButtonListeners(){
+    private void setLocationEdit(){
+        //XML bugged, must set InputType in code.
+        EditText locationEdit = (EditText) findViewById(R.id.bookedit_location_edit);
+        locationEdit.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+    }
+
+    private void setRatingBar(BookInformation book){
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.bookedit_book_rating_bar);
+        DrawableCompat.setTint(ratingBar.getProgressDrawable(), RATING_BAR_COLOR);
+        ratingBar.setRating((float) book.averageRating);
+    }
+
+    private void setISBN(BookInformation book){
+        TextView isbn = (TextView) findViewById(R.id.bookedit_isbn);
+        isbn.setText("ISBN: " + book.isbn);
+    }
+
+    private void setNumRatings(BookInformation book){
+        TextView numRatings = (TextView) findViewById(R.id.bookedit_book_rating);
+        numRatings.setText(String.valueOf(book.averageRating) + "/5.0 (" + String.valueOf(book.ratingsCount) + " reviews)");
+    }
+
+    private void setUpSaveButton(final BookInformation book){
+        Button saveBtn = (Button) findViewById(R.id.bookedit_save_button);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +103,10 @@ public class BookEditActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void setUpDiscardButton(){
+        Button discardBtn = (Button) findViewById(R.id.bookedit_discard_button);
         discardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,5 +117,4 @@ public class BookEditActivity extends AppCompatActivity {
             }
         });
     }
-
 }
