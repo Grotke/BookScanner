@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.view_books_button) {
-                    Intent intent = new Intent(MainActivity.this, DataViewActivity.class);
+                    Intent intent = new Intent(MainActivity.this, BookListActivity.class);
                     startActivity(intent);
                 }
             }

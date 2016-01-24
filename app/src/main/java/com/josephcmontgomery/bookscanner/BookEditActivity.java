@@ -121,12 +121,12 @@ public class BookEditActivity extends AppCompatActivity {
                 if (v.getId() == R.id.bookedit_save_button) {
                     EditText location = (EditText) findViewById(R.id.bookedit_location_edit);
                     EditText title = (EditText) findViewById(R.id.bookedit_book_title);
-                    String titleStr = title.getText().toString();
+                    String titleStr = title.getText().toString().trim();
                     if (titleStr.isEmpty()) {
                         setResult(RESULT_CANCELED);
                     } else {
                         book.title = titleStr;
-                        book.location = location.getText().toString();
+                        book.location = location.getText().toString().trim();
                         Database.insertBook(book, getApplicationContext());
                         setResult(RESULT_OK);
                     }
