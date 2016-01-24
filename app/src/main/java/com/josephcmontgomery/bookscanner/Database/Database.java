@@ -37,7 +37,6 @@ public class Database {
         ContentValues values = new ContentValues();
         values.put(BookScannerContract.Books.COLUMN_NAME_ISBN, book.isbn);
         values.put(BookScannerContract.Books.COLUMN_NAME_TITLE, book.title);
-        values.put(BookScannerContract.Books.COLUMN_NAME_SUBTITLE, book.subtitle);
         values.put(BookScannerContract.Books.COLUMN_NAME_AVERAGE_RATING, book.averageRating);
         values.put(BookScannerContract.Books.COLUMN_NAME_DESCRIPTION, book.description);
         values.put(BookScannerContract.Books.COLUMN_NAME_PAGE_COUNT, book.pageCount);

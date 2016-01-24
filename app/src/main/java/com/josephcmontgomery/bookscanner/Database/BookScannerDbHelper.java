@@ -16,7 +16,6 @@ public class BookScannerDbHelper extends SQLiteOpenHelper {
             BookScannerContract.Books._ID + " INTEGER PRIMARY KEY autoincrement, " +
             BookScannerContract.Books.COLUMN_NAME_ISBN + " TEXT not null unique" + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
-            BookScannerContract.Books.COLUMN_NAME_SUBTITLE + TEXT_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_PAGE_COUNT + INTEGER_TYPE + COMMA_SEP +
             BookScannerContract.Books.COLUMN_NAME_AVERAGE_RATING + REAL_TYPE + COMMA_SEP +

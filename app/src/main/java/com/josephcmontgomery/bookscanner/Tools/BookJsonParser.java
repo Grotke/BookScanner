@@ -53,7 +53,7 @@ public class BookJsonParser {
                     book.title = reader.nextString();
                     break;
                 case "subtitle":
-                    book.subtitle = reader.nextString();
+                    book.title +=  ": " +reader.nextString();
                     break;
                 case "description":
                     book.description = reader.nextString();

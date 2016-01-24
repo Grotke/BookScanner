@@ -21,7 +21,6 @@ import java.util.Date;
 
 public class BookEditActivity extends AppCompatActivity {
     private final int RATING_BAR_COLOR = 0xffffc60b;
-    private boolean bookFound = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +31,12 @@ public class BookEditActivity extends AppCompatActivity {
 
         BookInformation book = (BookInformation)getIntent().getSerializableExtra("bookInfo");
         setBookUpdateTime(book);
+        boolean editable = false;
         if(book.title.isEmpty()){
-            bookFound = false;
+            editable = true;
         }
 
-        setUIFields(book);
+        setUIFields(book, editable);
 
         setUpSaveButton(book);
         setUpDiscardButton();
@@ -53,10 +53,10 @@ public class BookEditActivity extends AppCompatActivity {
         book.timeLastUpdated = dateFormat.format(date);
     }
 
-    private void setUIFields(BookInformation book){
+    private void setUIFields(BookInformation book, boolean editable){
         //Image first to give more time to possibly retrieve online.
         setImage(book);
-        setTitleEdit(book);
+        setTitleEdit(book, editable);
         setLocationEdit();
         setRatingBar(book);
         setDate(book);
@@ -69,23 +69,18 @@ public class BookEditActivity extends AppCompatActivity {
         ImageFetcher.loadImage(book.imageURL, icon);
     }
 
-    private void setTitleEdit(BookInformation book){
+    private void setTitleEdit(BookInformation book, boolean editable){
         //XML bugged, must set InputType in code.
         EditText titleEdit = (EditText) findViewById(R.id.bookedit_book_title);
-        int editType = InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
-        if(bookFound) {
-            editType |= InputType.TYPE_NULL;
+        int editType;
+        if(!editable) {
+            editType = InputType.TYPE_NULL;
         }
         else{
-            editType |= InputType.TYPE_TEXT_FLAG_AUTO_CORRECT;
+            editType = InputType.TYPE_TEXT_FLAG_AUTO_CORRECT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS;
         }
         titleEdit.setInputType(editType);
-
-        String title = book.title;
-        if(!book.subtitle.isEmpty()) {
-            title += ": " + book.subtitle;
-        }
-        titleEdit.setText(title);
+        titleEdit.setText(book.title);
     }
 
     private void setLocationEdit(){
@@ -127,10 +122,7 @@ public class BookEditActivity extends AppCompatActivity {
                         setResult(RESULT_CANCELED);
                     }
                     else {
-                        if(!bookFound) {
-                            //Prevent overwriting the original title if book was found. Edit title is title and subtitle concatenated.
-                            book.title = titleStr;
-                        }
+                        book.title = titleStr;
                         book.location = location.getText().toString();
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("bookInfo", book);

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class BookInformation implements Serializable{
     public String title;
-    public String subtitle;
     public String isbn;
     public int pageCount;
     public double averageRating;
@@ -16,7 +15,6 @@ public class BookInformation implements Serializable{
 
     public BookInformation(){
         title = "";
-        subtitle = "";
         isbn = "";
         pageCount = 0;
         averageRating = 0;
@@ -31,7 +29,6 @@ public class BookInformation implements Serializable{
     public String toString(){
         return "ISBN: " + isbn +
                 "\nTITLE: " + title +
-                "\nSUBTITLE: " + subtitle +
                 "\nDESCRIPTION: " + description +
                 "\nPAGE COUNT: "+ pageCount+
                 "\nAVERAGE RATING: " + averageRating +

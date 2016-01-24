@@ -9,7 +9,6 @@ public final class BookScannerContract {
         public static final String TABLE_NAME = "books";
         public static final String COLUMN_NAME_ISBN = "isbn";
         public static final String COLUMN_NAME_TITLE = "title";
-        public static final String COLUMN_NAME_SUBTITLE = "subtitle";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_PAGE_COUNT = "pageCount";
         public static final String COLUMN_NAME_AVERAGE_RATING = "averageRating";
