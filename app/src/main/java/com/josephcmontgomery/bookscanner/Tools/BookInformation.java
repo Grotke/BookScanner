@@ -3,6 +3,7 @@ package com.josephcmontgomery.bookscanner.Tools;
 import java.io.Serializable;
 
 public class BookInformation implements Serializable{
+    public int bookId;
     public String title;
     public String isbn;
     public int pageCount;
@@ -14,6 +15,7 @@ public class BookInformation implements Serializable{
     public String timeLastUpdated;
 
     public BookInformation(){
+        bookId = -1;
         title = "";
         isbn = "";
         pageCount = 0;

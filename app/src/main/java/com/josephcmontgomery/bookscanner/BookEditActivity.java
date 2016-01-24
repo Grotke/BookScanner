@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
 
 public class BookEditActivity extends AppCompatActivity {
@@ -39,7 +39,7 @@ public class BookEditActivity extends AppCompatActivity {
         setUIFields(book, editable);
 
         setUpSaveButton(book);
-        setUpDiscardButton();
+        setUpCancelButton();
     }
 
     private void setUpToolbar(){
@@ -48,16 +48,16 @@ public class BookEditActivity extends AppCompatActivity {
     }
 
     private void setBookUpdateTime(BookInformation book){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = new Date();
-        book.timeLastUpdated = dateFormat.format(date);
+        book.timeLastUpdated = DateFormat.getDateInstance().format(date);
     }
 
     private void setUIFields(BookInformation book, boolean editable){
         //Image first to give more time to possibly retrieve online.
         setImage(book);
         setTitleEdit(book, editable);
-        setLocationEdit();
+        setLocationEdit(book);
         setRatingBar(book);
         setDate(book);
         setISBN(book);
@@ -83,10 +83,11 @@ public class BookEditActivity extends AppCompatActivity {
         titleEdit.setText(book.title);
     }
 
-    private void setLocationEdit(){
+    private void setLocationEdit(BookInformation book){
         //XML bugged, must set InputType in code.
         EditText locationEdit = (EditText) findViewById(R.id.bookedit_location_edit);
         locationEdit.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        locationEdit.setText(book.location);
     }
 
     private void setRatingBar(BookInformation book){
@@ -134,12 +135,12 @@ public class BookEditActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpDiscardButton(){
-        Button discardBtn = (Button) findViewById(R.id.bookedit_discard_button);
+    private void setUpCancelButton(){
+        Button discardBtn = (Button) findViewById(R.id.bookedit_cancel_button);
         discardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId() == R.id.bookedit_discard_button){
+                if(v.getId() == R.id.bookedit_cancel_button){
                     setResult(RESULT_CANCELED);
                     finish();
                 }

@@ -19,16 +19,16 @@
         android:text="@string/scan"
         android:layout_marginTop="@dimen/_50sdp"
         android:textColor="#ffffff"
-        android:background="@drawable/menu_button"
+        android:background="@drawable/blue_button"
         android:layout_centerHorizontal="true"/>
     <Button android:id="@+id/view_books_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_30sdp"
-        android:text="View Books"
+        android:text="@string/view_books"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/scan_button"
         android:textColor="#ffffff"
-        android:background="@drawable/menu_button"/>
+        android:background="@drawable/blue_button"/>
 </RelativeLayout>

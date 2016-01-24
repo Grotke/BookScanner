@@ -16,13 +16,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ffffff"
-        android:background="@drawable/menu_button"
+        android:background="@drawable/blue_button"
         android:text="@string/scan" />
 
     <Button android:id="@+id/view_books_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ffffff"
-        android:background="@drawable/menu_button"
+        android:background="@drawable/blue_button"
         android:text="@string/view_books" />
 </LinearLayout>
