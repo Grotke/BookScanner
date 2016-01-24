@@ -18,6 +18,17 @@ public class Database {
         db.insertWithOnConflict(BookScannerContract.Books.TABLE_NAME, "null", packBookContentValues(book), SQLiteDatabase.CONFLICT_REPLACE);
     }
 
+    public static void deleteBookById(int bookId, Context context){
+        if(db == null){
+            initializeDB(context);
+        }
+        if(bookId < 0){
+            return;
+        }
+        String[] whereArgs = new String[]{String.valueOf(bookId)};
+        db.delete(BookScannerContract.Books.TABLE_NAME, BookScannerContract.Books._ID + "=?", whereArgs);
+    }
+
     public static Cursor getAllBooks(Context context){
         String getAllBooksQuery = "select * from " + BookScannerContract.Books.TABLE_NAME;
         if(db == null){

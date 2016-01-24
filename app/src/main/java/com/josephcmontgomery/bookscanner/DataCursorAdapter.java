@@ -14,7 +14,7 @@ import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 
 public class DataCursorAdapter extends CursorAdapter {
     public DataCursorAdapter(Context context, Cursor cursor, int flags){
-        super(context,cursor,flags);
+        super(context, cursor, flags);
     }
 
     @Override
@@ -41,7 +41,6 @@ public class DataCursorAdapter extends CursorAdapter {
         String strTitle = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_TITLE));
         title.setText(strTitle);
     }
-
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {

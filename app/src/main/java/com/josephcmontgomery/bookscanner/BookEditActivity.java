@@ -30,6 +30,9 @@ public class BookEditActivity extends AppCompatActivity {
         setUpToolbar();
 
         BookInformation book = (BookInformation)getIntent().getSerializableExtra("bookInfo");
+        if(getIntent().getExtras().getBoolean("deleteEnabled")){
+            setUpDeleteButton(book);
+        }
         setBookUpdateTime(book);
         boolean editable = false;
         if(book.title.isEmpty()){
@@ -48,7 +51,6 @@ public class BookEditActivity extends AppCompatActivity {
     }
 
     private void setBookUpdateTime(BookInformation book){
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = new Date();
         book.timeLastUpdated = DateFormat.getDateInstance().format(date);
     }
@@ -115,14 +117,13 @@ public class BookEditActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId() == R.id.bookedit_save_button){
+                if (v.getId() == R.id.bookedit_save_button) {
                     EditText location = (EditText) findViewById(R.id.bookedit_location_edit);
                     EditText title = (EditText) findViewById(R.id.bookedit_book_title);
                     String titleStr = title.getText().toString();
-                    if(titleStr.isEmpty()){
+                    if (titleStr.isEmpty()) {
                         setResult(RESULT_CANCELED);
-                    }
-                    else {
+                    } else {
                         book.title = titleStr;
                         book.location = location.getText().toString();
                         Intent returnIntent = new Intent();
@@ -136,12 +137,28 @@ public class BookEditActivity extends AppCompatActivity {
     }
 
     private void setUpCancelButton(){
-        Button discardBtn = (Button) findViewById(R.id.bookedit_cancel_button);
-        discardBtn.setOnClickListener(new View.OnClickListener() {
+        Button cancelBtn = (Button) findViewById(R.id.bookedit_cancel_button);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(v.getId() == R.id.bookedit_cancel_button){
                     setResult(RESULT_CANCELED);
+                    finish();
+                }
+            }
+        });
+    }
+
+    private void setUpDeleteButton(final BookInformation book){
+        Button deleteBtn = (Button) findViewById(R.id.bookedit_delete_button);
+        deleteBtn.setVisibility(View.VISIBLE);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.bookedit_delete_button) {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("bookIdToDelete", book.bookId);
+                    setResult(RESULT_FIRST_USER, returnIntent);
                     finish();
                 }
             }
