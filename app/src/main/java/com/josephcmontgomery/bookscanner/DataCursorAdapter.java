@@ -2,6 +2,7 @@ package com.josephcmontgomery.bookscanner;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,12 @@ public class DataCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        if(cursor.getPosition()%2==1) {
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.darkView));
+        }
+        else{
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.lightView));
+        }
         setImage(view, cursor);
         setLocation(view, cursor);
         setTitle(view, cursor);

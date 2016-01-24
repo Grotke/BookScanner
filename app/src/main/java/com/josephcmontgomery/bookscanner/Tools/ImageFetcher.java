@@ -12,6 +12,9 @@ public class ImageFetcher {
     private static HashMap<String, Drawable> cache = new HashMap<>();
 
     public static void loadImage(final String imageUrl, final ImageView image){
+        if(imageUrl.isEmpty()){
+            return;
+        }
         if(cache.containsKey(imageUrl)){
             image.setImageDrawable(getDrawable(imageUrl));
         }

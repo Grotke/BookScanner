@@ -15,41 +15,25 @@ import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 
 public class DataViewActivity extends AppCompatActivity {
     private ListView listView;
-    private final int NO_FLAGS = 0;
     private final int BOOK_EDIT_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_view);
-
         setUpToolbar();
-
-        listView = (ListView) findViewById(R.id.data_list_view);
-        Cursor dataResults = Database.getAllBooks(getApplicationContext());
-        if(dataResults.getCount() != 0) {
-            listView.setAdapter(new DataCursorAdapter(this, dataResults, NO_FLAGS));
-            listView.setOnItemClickListener(
-                    new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Cursor cursor = ((DataCursorAdapter) parent.getAdapter()).getCursor();
-                            cursor.moveToPosition(position);
-                            BookInformation book = packBookFromCursor(cursor);
-                            Intent bookEditIntent = new Intent(DataViewActivity.this, BookEditActivity.class);
-                            bookEditIntent.putExtra("bookInfo", book);
-                            bookEditIntent.putExtra("deleteEnabled", true);
-                            startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
-                        }
-                    }
-
-            );
-        }
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent intent){
-        if (requestCode == BOOK_EDIT_REQUEST && resultCode == RESULT_FIRST_USER){
-            Database.deleteBookById(intent.getIntExtra("bookIdToDelete", -1), getApplicationContext());
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(listView == null) {
+            setUpListView();
+        }
+        listView.setAdapter(null);
+        Cursor dataResults = Database.getAllBooks(getApplicationContext());
+        if (dataResults.getCount() != 0) {
+            listView.setAdapter(new DataCursorAdapter(this, dataResults, DataCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER));
         }
     }
 
@@ -58,6 +42,24 @@ public class DataViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+    private void setUpListView(){
+        listView = (ListView) findViewById(R.id.data_list_view);
+        listView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Cursor cursor = ((DataCursorAdapter) parent.getAdapter()).getCursor();
+                        cursor.moveToPosition(position);
+                        BookInformation book = packBookFromCursor(cursor);
+                        Intent bookEditIntent = new Intent(DataViewActivity.this, BookEditActivity.class);
+                        bookEditIntent.putExtra("bookInfo", book);
+                        bookEditIntent.putExtra("deleteEnabled", true);
+                        startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
+                    }
+                }
+
+        );
+    }
     private BookInformation packBookFromCursor(Cursor cursor){
         BookInformation book = new BookInformation();
         book.title = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_TITLE));

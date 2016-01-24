@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.josephcmontgomery.bookscanner.Database.Database;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 import com.josephcmontgomery.bookscanner.Tools.BookJsonParser;
 
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity{
             processScanResult(resultCode, scanningResult);
         }
         else if (requestCode == BOOK_EDIT_REQUEST){
-            processEditResult(resultCode, intent);
+            startScan(MainActivity.this);
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT);
@@ -100,14 +99,6 @@ public class MainActivity extends AppCompatActivity{
             String isbn = scanningResult.getContents();
             new GetBookByISBN().execute(isbn);
         }
-    }
-
-    private void processEditResult(int resultCode, Intent intent){
-        if(resultCode == RESULT_OK) {
-            BookInformation book = (BookInformation) intent.getSerializableExtra("bookInfo");
-            Database.insertBook(book, getApplicationContext());
-        }
-        startScan(MainActivity.this);
     }
 
     private void startScan(Activity launchActivity){

@@ -1,6 +1,5 @@
 package com.josephcmontgomery.bookscanner;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.josephcmontgomery.bookscanner.Database.Database;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 
@@ -30,14 +30,15 @@ public class BookEditActivity extends AppCompatActivity {
         setUpToolbar();
 
         BookInformation book = (BookInformation)getIntent().getSerializableExtra("bookInfo");
-        if(getIntent().getExtras().getBoolean("deleteEnabled")){
-            setUpDeleteButton(book);
-        }
-        setBookUpdateTime(book);
         boolean editable = false;
         if(book.title.isEmpty()){
             editable = true;
         }
+        if(getIntent().getExtras().getBoolean("deleteEnabled")){
+            setUpDeleteButton(book);
+            editable = true;
+        }
+        setBookUpdateTime(book);
 
         setUIFields(book, editable);
 
@@ -126,9 +127,8 @@ public class BookEditActivity extends AppCompatActivity {
                     } else {
                         book.title = titleStr;
                         book.location = location.getText().toString();
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("bookInfo", book);
-                        setResult(RESULT_OK, returnIntent);
+                        Database.insertBook(book, getApplicationContext());
+                        setResult(RESULT_OK);
                     }
                     finish();
                 }
@@ -156,9 +156,8 @@ public class BookEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.bookedit_delete_button) {
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("bookIdToDelete", book.bookId);
-                    setResult(RESULT_FIRST_USER, returnIntent);
+                    Database.deleteBookById(book.bookId, getApplicationContext());
+                    setResult(RESULT_FIRST_USER);
                     finish();
                 }
             }
