@@ -42,7 +42,7 @@ public class Database {
         values.put(BookScannerContract.Books.COLUMN_NAME_DESCRIPTION, book.description);
         values.put(BookScannerContract.Books.COLUMN_NAME_PAGE_COUNT, book.pageCount);
         values.put(BookScannerContract.Books.COLUMN_NAME_RATINGS_COUNT, book.ratingsCount);
-        values.put(BookScannerContract.Books.COLUMN_NAME_DATE_SCANNED, System.currentTimeMillis());
+        values.put(BookScannerContract.Books.COLUMN_NAME_DATE_SCANNED, book.timeLastUpdated);
         values.put(BookScannerContract.Books.COLUMN_NAME_IMAGE_URL, book.imageURL);
         values.put(BookScannerContract.Books.COLUMN_NAME_LOCATION, book.location);
         return values;

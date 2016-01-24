@@ -6,6 +6,6 @@
     <string name="save">SAVE</string>
     <string name="discard">DISCARD</string>
     <string name="location_edit_label">Location: </string>
-    <string name="title_activity_data_view">DataViewActivity</string>
+    <string name="title_activity_data_view">Book List</string>
     <string name="title_activity_book_edit">Edit</string>
 </resources>
