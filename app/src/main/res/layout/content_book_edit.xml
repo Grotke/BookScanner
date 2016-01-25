@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,77 +12,9 @@
     tools:context=".BookEditActivity"
     tools:showIn="@layout/activity_book_edit">
 
-    <EditText
-        android:id="@+id/bookedit_book_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/_20sdp"
-        android:layout_centerHorizontal="true"
-        />
-
-    <ImageView
-        android:id="@+id/bookedit_book_image"
+    <FrameLayout
+        android:id="@+id/edit_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_150sdp"
-        android:src="@drawable/no_image"
-        android:layout_centerHorizontal="true"
+        android:layout_height="match_parent" />
+</LinearLayout>
 
-        android:layout_below="@id/bookedit_book_title"
-        />
-
-    <TextView
-        android:id="@+id/bookedit_location_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location: "
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_below="@id/bookedit_book_image"
-        android:textSize="@dimen/_20sdp"/>
-    <EditText
-        android:id="@+id/bookedit_location_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/bookedit_book_image"
-        android:layout_alignBaseline="@id/bookedit_location_label"
-        android:layout_toRightOf="@id/bookedit_location_label"
-        />
-    <TextView
-        android:id="@+id/bookedit_isbn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ISBN: 098273834948"
-        android:textSize="@dimen/_14sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_below="@id/bookedit_location_label"/>
-
-
-    <TextView
-        android:id="@+id/bookedit_book_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0.0/5.0 (0 Reviews)"
-        android:layout_marginTop="@dimen/_25sdp"
-        android:textSize="@dimen/_12sdp"
-        android:layout_below="@id/bookedit_isbn"
-        />
-    <RatingBar
-        android:id="@+id/bookedit_book_rating_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:isIndicator="true"
-        android:stepSize="0.1"
-        android:rating="3.3"
-        android:layout_below="@id/bookedit_book_rating"
-        />
-    <TextView
-        android:id="@+id/bookedit_scan_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_25sdp"
-        android:textSize="@dimen/_12sdp"
-        android:layout_below = "@id/bookedit_isbn"
-        android:layout_alignParentRight="true"/>
-
-
-
-</RelativeLayout>

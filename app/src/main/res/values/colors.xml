@@ -5,4 +5,5 @@
     <color name="colorAccent">#33ccff</color>
     <color name="darkView">#ddeeee</color>
     <color name="lightView">#eeeeee</color>
+    <color name="ratingBar">#ffc81a</color>
 </resources>

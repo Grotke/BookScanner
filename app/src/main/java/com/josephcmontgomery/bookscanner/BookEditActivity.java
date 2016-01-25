@@ -1,10 +1,13 @@
 package com.josephcmontgomery.bookscanner;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,17 +22,41 @@ import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 import java.text.DateFormat;
 import java.util.Date;
 
-public class BookEditActivity extends AppCompatActivity {
+public class BookEditActivity extends AppCompatActivity implements BookEditFragment.OnBookEditListener {
     private final int RATING_BAR_COLOR = 0xffffc60b;
+
+    private void onReturn(int resultCode){
+        setResult(resultCode);
+        finish();
+    }
+
+    public void onSave(){
+        onReturn(RESULT_OK);
+    }
+
+    public void onCancel(){
+        onReturn(RESULT_CANCELED);
+    }
+
+    public void onDelete(){
+        onReturn(RESULT_FIRST_USER);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_edit);
-
         setUpToolbar();
+        Log.e("EDIT", "Got here");
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        BookEditFragment bookFrag = new BookEditFragment();
+        bookFrag.setArguments(getIntent().getExtras());
+        ft.add(R.id.edit_container, bookFrag);
+        ft.commit();
+        Log.e("EDIT", "PAST HERE");
 
-        BookInformation book = (BookInformation)getIntent().getSerializableExtra("bookInfo");
+        /*BookInformation book = (BookInformation)getIntent().getSerializableExtra("bookInfo");
         boolean editable = false;
         if(book.title.isEmpty()){
             editable = true;
@@ -43,7 +70,7 @@ public class BookEditActivity extends AppCompatActivity {
         setUIFields(book, editable);
 
         setUpSaveButton(book);
-        setUpCancelButton();
+        setUpCancelButton();*/
     }
 
     private void setUpToolbar(){

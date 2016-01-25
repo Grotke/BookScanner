@@ -6,6 +6,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/booklist_fragment"
-    tools:layout="@layout/activity_data_view">
-
-</fragment>
+    tools:layout="@layout/activity_data_view"/>
