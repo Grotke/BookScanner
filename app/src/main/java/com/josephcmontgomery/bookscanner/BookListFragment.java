@@ -26,7 +26,7 @@ public class BookListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_data_view, container, false);
+        return inflater.inflate(R.layout.booklist_fragment, container, false);
     }
 
     @Override
@@ -36,14 +36,14 @@ public class BookListFragment extends Fragment {
             setUpListView();
         }
         listView.setAdapter(null);
-        Cursor dataResults = Database.getAllBooks(getActivity().getApplicationContext());
+        Cursor dataResults = Database.getAllBooks(getContext());
         if (dataResults.getCount() != 0) {
             listView.setAdapter(new DataCursorAdapter(getActivity(), dataResults, DataCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER));
         }
     }
 
     private void setUpListView(){
-        listView = (ListView) getActivity().findViewById(R.id.data_list_view);
+        listView = (ListView) getView().findViewById(R.id.data_list_view);
         listView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
                     @Override

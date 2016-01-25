@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +23,8 @@ import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 import java.text.DateFormat;
 import java.util.Date;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class BookEditFragment extends Fragment {
     private OnBookEditListener callback;
-    private ImageView icon;
 
     public interface OnBookEditListener {
         void onSave();
@@ -40,27 +35,6 @@ public class BookEditFragment extends Fragment {
     public BookEditFragment() {
         // Required empty public constructor
     }
-
-    /*@Override
-    public void onCreate(Bundle savedInstanceState){
-        Bundle bundle = getArguments();
-
-        BookInformation book = (BookInformation) bundle.getSerializable("bookInfo");
-        boolean editable = false;
-        if(book.title.isEmpty()){
-            editable = true;
-        }
-        if(bundle.getBoolean("deleteEnabled")){
-            setUpDeleteButton(book);
-            editable = true;
-        }
-        setBookUpdateTime(book);
-
-        setUIFields(book, editable);
-
-        setUpSaveButton(book);
-        setUpCancelButton();
-    }*/
 
     @Override
     public void onAttach(Context context) {
@@ -77,12 +51,11 @@ public class BookEditFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.bookedit_fragment, container, false);
         Bundle bundle = getArguments();
         if(bundle == null){
-            Log.e("BUNDLE", "NULL BUNDLE");
             return view;
         }
         BookInformation book = (BookInformation) bundle.getSerializable("bookInfo");
@@ -91,16 +64,14 @@ public class BookEditFragment extends Fragment {
             editable = true;
         }
         if(bundle.getBoolean("deleteEnabled")){
-            setUpDeleteButton(view,book);
+            setUpDeleteButton(book);
             editable = true;
         }
         setBookUpdateTime(book);
-        Log.e("CREATE VIEW", "Got here");
         setUIFields(view, book, editable);
 
         setUpSaveButton(view, book);
-        setUpCancelButton(view);
-        Log.e("CREATE VIEW", "Left Create");
+        setUpCancelButton();
         return view;
     }
 
@@ -188,7 +159,7 @@ public class BookEditFragment extends Fragment {
         });
     }
 
-    private void setUpCancelButton(View parentView){
+    private void setUpCancelButton(){
         Button cancelBtn = (Button) getActivity().findViewById(R.id.bookedit_cancel_button);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +171,7 @@ public class BookEditFragment extends Fragment {
         });
     }
 
-    private void setUpDeleteButton(View parentView, final BookInformation book){
+    private void setUpDeleteButton(final BookInformation book){
         Button deleteBtn = (Button) getActivity().findViewById(R.id.bookedit_delete_button);
         deleteBtn.setVisibility(View.VISIBLE);
         deleteBtn.setOnClickListener(new View.OnClickListener() {
