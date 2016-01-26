@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 //TODO: Handle database with non-isbn barcodes. Inform user of book not found. Add barcode library.
 //TODO: Adjust for different screen sizes. Deal with no internet connection.
@@ -34,7 +35,9 @@ import java.net.URL;
 //TODO: Add way to manually add book. Add way to add location and view all books scanned.
 //TODO: Make sure back button doesn't take to previous screens on book location editing screen.
 public class MainActivity extends AppCompatActivity{
+    ArrayList<BookInformation> books;
     private final int BOOK_EDIT_REQUEST = 1;
+    private final int BOOK_SWIPE_EDIT_REQUEST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
 
         setUpToolbar();
         setUpMenuButtons();
+        books = new ArrayList<>();
     }
 
     private void setUpToolbar(){
@@ -88,6 +92,8 @@ public class MainActivity extends AppCompatActivity{
         else if (requestCode == BOOK_EDIT_REQUEST){
             startScan(MainActivity.this);
         }
+        else if (requestCode == BOOK_SWIPE_EDIT_REQUEST){
+        }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
@@ -98,6 +104,11 @@ public class MainActivity extends AppCompatActivity{
         if(resultCode == RESULT_OK) {
             String isbn = scanningResult.getContents();
             new GetBookByISBN().execute(isbn);
+        }
+        if(resultCode == RESULT_CANCELED && !books.isEmpty()){
+            Intent bookEditIntent = new Intent(MainActivity.this, BookEditSwipeActivity.class);
+            bookEditIntent.putExtra("books", books);
+            startActivityForResult(bookEditIntent, BOOK_SWIPE_EDIT_REQUEST);
         }
     }
 
@@ -126,9 +137,15 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(BookInformation book) {
-            Intent bookEditIntent = new Intent(MainActivity.this, BookEditActivity.class);
-            bookEditIntent.putExtra("bookInfo", book);
-            startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
+            if(book.title.trim().isEmpty()){
+                Intent bookEditIntent = new Intent(MainActivity.this, BookEditActivity.class);
+                bookEditIntent.putExtra("bookInfo", book);
+                startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
+            }
+            else{
+                books.add(book);
+                onActivityResult(BOOK_EDIT_REQUEST, RESULT_OK, null);
+            }
         }
 
         private BookInformation parseJsonStream(InputStream inStream, String isbn) throws Exception {
