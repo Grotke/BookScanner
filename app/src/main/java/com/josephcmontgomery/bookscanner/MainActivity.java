@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 if (v.getId() == R.id.view_books_button) {
                     //Intent intent = new Intent(MainActivity.this, BookListActivity.class);
-                    Intent intent = new Intent(MainActivity.this, BookEditSwipeActivity.class);
-                    startActivity(intent);
+                    Intent bookEditIntent = new Intent(MainActivity.this, BookViewerActivity.class);
+                    startActivity(bookEditIntent);
                 }
             }
         });
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity{
             startScan(MainActivity.this);
         }
         else if (requestCode == BOOK_SWIPE_EDIT_REQUEST){
+            books.clear();
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT);

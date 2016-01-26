@@ -56,8 +56,9 @@ public class BookListFragment extends Fragment {
             setUpListView();
         }
         listView.setAdapter(null);
-        ArrayList<BookInformation> books = (ArrayList<BookInformation>) getArguments().getSerializable("books");
-        if(books != null){
+        Bundle bundle = getArguments();
+        if(bundle != null && bundle.containsKey("books")){
+            ArrayList<BookInformation> books = (ArrayList<BookInformation>) bundle.getSerializable("books");
             listView.setAdapter(new BookListAdapter(getContext(), R.layout.list_item, books));
         }
         else {
