@@ -50,6 +50,16 @@ public class BookEditFragment extends Fragment {
         }
     }
 
+    public static BookEditFragment newInstance(BookInformation book, boolean editable){
+        BookEditFragment bookFrag = new BookEditFragment();
+
+        Bundle args = new Bundle();
+        args.putSerializable("bookInfo", book);
+        args.putBoolean("deleteEnabled", editable);
+        bookFrag.setArguments(args);
+        return bookFrag;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
