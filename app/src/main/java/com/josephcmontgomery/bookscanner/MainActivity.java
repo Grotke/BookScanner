@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.view_books_button) {
-                    Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                    //Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                    Intent intent = new Intent(MainActivity.this, BookEditSwipeActivity.class);
                     startActivity(intent);
                 }
             }
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity{
             new GetBookByISBN().execute(isbn);
         }
         if(resultCode == RESULT_CANCELED && !books.isEmpty()){
-            Intent bookEditIntent = new Intent(MainActivity.this, BookEditSwipeActivity.class);
+            Intent bookEditIntent = new Intent(MainActivity.this, BookViewerActivity.class);
             bookEditIntent.putExtra("books", books);
             startActivityForResult(bookEditIntent, BOOK_SWIPE_EDIT_REQUEST);
         }
@@ -138,8 +139,10 @@ public class MainActivity extends AppCompatActivity{
         @Override
         protected void onPostExecute(BookInformation book) {
             if(book.title.trim().isEmpty()){
-                Intent bookEditIntent = new Intent(MainActivity.this, BookEditActivity.class);
-                bookEditIntent.putExtra("bookInfo", book);
+                ArrayList<BookInformation> singleBook = new ArrayList<>();
+                singleBook.add(book);
+                Intent bookEditIntent = new Intent(MainActivity.this, BookEditSwipeActivity.class);
+                bookEditIntent.putExtra("books", singleBook);
                 startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
             }
             else{

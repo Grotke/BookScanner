@@ -10,4 +10,5 @@
     <string name="title_activity_data_view">Book List</string>
     <string name="title_activity_book_edit">Edit</string>
     <string name="title_activity_book_edit_scroll">BookEditScrollActivity</string>
+    <string name="title_activity_book_viewer">BookViewerActivity</string>
 </resources>

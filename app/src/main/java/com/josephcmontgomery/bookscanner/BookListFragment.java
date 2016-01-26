@@ -1,6 +1,6 @@
 package com.josephcmontgomery.bookscanner;
 
-import android.content.Intent;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,14 +11,36 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.josephcmontgomery.bookscanner.Database.Database;
+import com.josephcmontgomery.bookscanner.Tools.BookInformation;
+
+import java.util.ArrayList;
 
 public class BookListFragment extends Fragment {
+    private OnBookListListener callback;
 
     private ListView listView;
     private final int BOOK_EDIT_REQUEST = 1;
 
+    public interface OnBookListListener{
+        void onBookSelected(int position);
+    }
+
     public BookListFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            callback = (OnBookListListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnBookListListener");
+        }
     }
 
     @Override
@@ -34,9 +56,15 @@ public class BookListFragment extends Fragment {
             setUpListView();
         }
         listView.setAdapter(null);
-        Cursor dataResults = Database.getAllBooks(getContext());
-        if (dataResults.getCount() != 0) {
-            listView.setAdapter(new DataCursorAdapter(getActivity(), dataResults, DataCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER));
+        ArrayList<BookInformation> books = (ArrayList<BookInformation>) getArguments().getSerializable("books");
+        if(books != null){
+            listView.setAdapter(new BookListAdapter(getContext(), R.layout.list_item, books));
+        }
+        else {
+            Cursor dataResults = Database.getAllBooks(getContext());
+            if (dataResults.getCount() != 0) {
+                listView.setAdapter(new DataCursorAdapter(getActivity(), dataResults, DataCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER));
+            }
         }
     }
 
@@ -46,9 +74,10 @@ public class BookListFragment extends Fragment {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent bookEditIntent = new Intent(getActivity(), BookEditSwipeActivity.class);
+                        callback.onBookSelected(position);
+                        /*Intent bookEditIntent = new Intent(getActivity(), BookEditSwipeActivity.class);
                         bookEditIntent.putExtra("position", position);
-                        startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
+                        startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);*/
                     }
                 }
         );

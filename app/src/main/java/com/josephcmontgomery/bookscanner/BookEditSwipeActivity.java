@@ -9,7 +9,7 @@ import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 
 import java.util.ArrayList;
 
-public class BookEditSwipeActivity extends AppCompatActivity implements BookEditFragment.OnBookEditListener {
+public class BookEditSwipeActivity extends AppCompatActivity implements BookEditFragment.OnBookEditListener{
     private BookEditPagerAdapter adapter;
     private ViewPager pager;
 
@@ -19,6 +19,10 @@ public class BookEditSwipeActivity extends AppCompatActivity implements BookEdit
         setContentView(R.layout.activity_book_edit_swipe);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setUpViewPager();
+    }
+
+    private void setUpViewPager(){
         adapter = new BookEditPagerAdapter(getSupportFragmentManager());
         adapter.setEditable(true);
         pager = (ViewPager) findViewById(R.id.pager);

@@ -31,6 +31,10 @@
         <activity
             android:name=".BookEditSwipeActivity"
             android:label="@string/title_activity_book_edit_scroll"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BookViewerActivity"
+            android:label="@string/title_activity_book_viewer"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
