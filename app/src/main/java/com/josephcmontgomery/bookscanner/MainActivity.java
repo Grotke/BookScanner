@@ -142,7 +142,8 @@ public class MainActivity extends AppCompatActivity{
             if(book.title.trim().isEmpty()){
                 ArrayList<BookInformation> singleBook = new ArrayList<>();
                 singleBook.add(book);
-                Intent bookEditIntent = new Intent(MainActivity.this, BookEditSwipeActivity.class);
+                Intent bookEditIntent = new Intent(MainActivity.this, BookViewerActivity.class);
+                bookEditIntent.putExtra("useList", false);
                 bookEditIntent.putExtra("books", singleBook);
                 startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
             }
