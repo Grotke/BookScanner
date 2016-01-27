@@ -1,5 +1,6 @@
 package com.josephcmontgomery.bookscanner;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,7 +25,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
         setSupportActionBar(toolbar);
 
         attachBookListFragment();
-        if(getResources().getBoolean(R.bool.dual_pane) ){//&& getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if(getResources().getBoolean(R.bool.dual_pane) && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ){//&& getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             setUpViewPager();
         }
     }
@@ -68,7 +69,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
     }
 
     public void onBookSelected(int position){
-        if(!getResources().getBoolean(R.bool.dual_pane)){
+        if(!(getResources().getBoolean(R.bool.dual_pane) && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)){
             findViewById(R.id.book_list_container).setVisibility(View.GONE);
             setUpViewPager();
             pager.setCurrentItem(position);

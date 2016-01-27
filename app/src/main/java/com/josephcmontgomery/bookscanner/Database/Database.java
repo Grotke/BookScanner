@@ -39,7 +39,8 @@ public class Database {
 
     private static void initializeDB(Context context){
         //Delete database for debugging purposes.
-        context.deleteDatabase(BookScannerDbHelper.DATABASE_NAME);
+        //Undelete database for rapid UI tests.
+        //context.deleteDatabase(BookScannerDbHelper.DATABASE_NAME);
         BookScannerDbHelper helper = new BookScannerDbHelper(context);
         db = helper.getWritableDatabase();
     }
