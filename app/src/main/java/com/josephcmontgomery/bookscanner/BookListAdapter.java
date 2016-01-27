@@ -1,7 +1,6 @@
 package com.josephcmontgomery.bookscanner;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +28,6 @@ public class BookListAdapter extends ArrayAdapter<BookInformation> {
             LayoutInflater inflater;
             inflater = LayoutInflater.from(getContext());
             view = inflater.inflate(R.layout.list_item, parent, false);
-        }
-
-        if(position%2==1) {
-            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.darkView));
-        }
-        else{
-            view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.lightView));
         }
 
         BookInformation book = getItem(position);

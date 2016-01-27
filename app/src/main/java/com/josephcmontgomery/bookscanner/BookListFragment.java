@@ -56,6 +56,7 @@ public class BookListFragment extends Fragment {
             setUpListView();
         }
         listView.setAdapter(null);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         Bundle bundle = getArguments();
         if(bundle != null && bundle.containsKey("books")){
             ArrayList<BookInformation> books = (ArrayList<BookInformation>) bundle.getSerializable("books");
@@ -76,9 +77,6 @@ public class BookListFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         callback.onBookSelected(position);
-                        /*Intent bookEditIntent = new Intent(getActivity(), BookEditSwipeActivity.class);
-                        bookEditIntent.putExtra("position", position);
-                        startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);*/
                     }
                 }
         );
