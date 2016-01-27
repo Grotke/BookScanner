@@ -5,26 +5,34 @@
     <ImageView
         android:id="@+id/book_cover_image"
         android:src="@drawable/no_image"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_margin="5dp"/>
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_margin="@dimen/_3sdp"/>
 
     <TextView
         android:id="@+id/book_title_entry"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@id/book_cover_image"
-        android:textSize="18sp"/>
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/_10sdp"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"/>
 
 
     <TextView
         android:id="@+id/book_location_entry"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@id/book_title_entry"
+        android:layout_toRightOf="@id/book_cover_image"
         android:textStyle="italic"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_17sdp"
+        android:singleLine="true"
+        android:scrollHorizontally="true"
+        android:ellipsize="end" />
 
 </RelativeLayout>
