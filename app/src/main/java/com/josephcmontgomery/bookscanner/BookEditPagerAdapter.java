@@ -1,12 +1,10 @@
 package com.josephcmontgomery.bookscanner;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.josephcmontgomery.bookscanner.Database.Database;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 
 import java.util.ArrayList;
@@ -49,12 +47,13 @@ public class BookEditPagerAdapter extends FragmentStatePagerAdapter{
         notifyDataSetChanged();
     }
 
-    public void setBooks(Context context){
-        cursor = Database.getAllBooks(context);
+    public void setBooks(Cursor cursor){
+        this.cursor = cursor;
         notifyDataSetChanged();
     }
 
     public void setEditable(boolean editable){
         this.editable = editable;
     }
+
 }

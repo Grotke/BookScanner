@@ -19,7 +19,6 @@ public class BookListFragment extends Fragment {
     private OnBookListListener callback;
 
     private ListView listView;
-    private final int BOOK_EDIT_REQUEST = 1;
 
     public interface OnBookListListener{
         void onBookSelected(int position);
@@ -63,10 +62,9 @@ public class BookListFragment extends Fragment {
             listView.setAdapter(new BookListAdapter(getContext(), R.layout.list_item, books));
         }
         else {
-            Cursor dataResults = Database.getAllBooks(getContext());
-            if (dataResults.getCount() != 0) {
-                listView.setAdapter(new DataCursorAdapter(getActivity(), dataResults, DataCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER));
-            }
+            Cursor cursor = Database.getAllBooks(getActivity().getApplicationContext());
+            DataCursorAdapter dataAdapter = new DataCursorAdapter(getActivity(), cursor, DataCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+            listView.setAdapter(dataAdapter);
         }
     }
 
@@ -81,4 +79,5 @@ public class BookListFragment extends Fragment {
                 }
         );
     }
+
 }

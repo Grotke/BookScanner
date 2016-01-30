@@ -30,7 +30,7 @@ public class Database {
     }
 
     public static Cursor getAllBooks(Context context){
-        String getAllBooksQuery = "select * from " + BookScannerContract.Books.TABLE_NAME;
+        String getAllBooksQuery = "select * from " + BookScannerContract.Books.TABLE_NAME + " order by " + BookScannerContract.Books.COLUMN_NAME_TITLE + " ASC";
         if(db == null){
             initializeDB(context);
         }

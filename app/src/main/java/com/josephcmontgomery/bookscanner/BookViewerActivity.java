@@ -8,11 +8,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
+import com.josephcmontgomery.bookscanner.Database.Database;
+import com.josephcmontgomery.bookscanner.Tools.BookCache;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BookViewerActivity extends AppCompatActivity implements BookEditFragment.OnBookEditListener, BookListFragment.OnBookListListener {
     private final int BOOK_SWIPE_EDIT_REQUEST = 2;
@@ -54,8 +59,30 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setVisibility(View.VISIBLE);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int state) {
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                BookEditPagerAdapter adapter = (BookEditPagerAdapter) pager.getAdapter();
+                if(adapter != null){
+                    Log.e("FRAG POS", String.valueOf(position));
+                    BookEditFragment bookFrag = (BookEditFragment)adapter.instantiateItem(pager, position);
+                    if(bookFrag != null) {
+                        bookFrag.setBookFromUI();
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+            }
+        });
         if(getIntent().getSerializableExtra("books") == null){
-            adapter.setBooks(getApplicationContext());
+            adapter.setBooks(Database.getAllBooks(getApplicationContext()));
         }
         else{
             adapter.setBooks((ArrayList<BookInformation>) getIntent().getSerializableExtra("books"));
@@ -63,18 +90,30 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
     }
 
     public void onSave(){
-        setResult(RESULT_OK);
-        finish();
+        ArrayList<BookInformation> books = BookCache.getBooks();
+        for(BookInformation book: books){
+            if (!book.title.isEmpty()) {
+                Date date = new Date();
+                book.timeLastUpdated = DateFormat.getDateInstance().format(date);
+                Database.insertBook(book, getApplicationContext());
+            }
+        }
+        BookCache.clearBooks();
+        updateViews();
+        if(!deviceUsesDualPane()) {
+            pager.setVisibility(View.GONE);
+            findViewById(R.id.book_list_container).setVisibility(View.VISIBLE);
+        }
     }
 
     public void onCancel(){
-        setResult(RESULT_CANCELED);
-        finish();
+        onBackPressed();
     }
 
-    public void onDelete(){
-        setResult(RESULT_FIRST_USER);
-        finish();
+    public void onDelete(BookInformation book){
+        Database.deleteBookById(book.bookId, getApplicationContext());
+        BookCache.removeBook(book);
+        updateViews();
     }
 
     public void onBookSelected(int position){
@@ -85,6 +124,25 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
         }
         else{
             pager.setCurrentItem(position);
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(pager != null && pager.getVisibility() == View.VISIBLE && !deviceUsesDualPane()){
+            BookCache.clearBooks();
+            pager.setVisibility(View.GONE);
+            findViewById(R.id.book_list_container).setVisibility(View.VISIBLE);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
+    private void updateViews(){
+        BookListFragment listFrag = (BookListFragment) getSupportFragmentManager().findFragmentById(R.id.book_list_container);
+        if(listFrag != null){
+            listFrag.onResume();
         }
     }
 
