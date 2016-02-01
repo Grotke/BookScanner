@@ -28,7 +28,13 @@ public class BookEditPagerAdapter extends FragmentStatePagerAdapter{
         else{
             book = books.get(position);
         }
-        return BookEditFragment.newInstance(book, editable);
+
+        if(editable) {
+            return BookEditFragment.newInstance(book, editable);
+        }
+        else{
+            return BookDetailFragment.newInstance(book);
+        }
     }
 
     @Override
@@ -54,6 +60,10 @@ public class BookEditPagerAdapter extends FragmentStatePagerAdapter{
 
     public void setEditable(boolean editable){
         this.editable = editable;
+    }
+
+    public boolean isEditable(){
+        return editable;
     }
 
 }

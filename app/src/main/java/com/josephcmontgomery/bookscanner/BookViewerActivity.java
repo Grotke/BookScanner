@@ -55,7 +55,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
 
     private void setUpViewPager(){
         BookEditPagerAdapter adapter = new BookEditPagerAdapter(getSupportFragmentManager());
-        adapter.setEditable(true);
+        //adapter.setEditable(true);
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setVisibility(View.VISIBLE);
@@ -68,11 +68,14 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 BookEditPagerAdapter adapter = (BookEditPagerAdapter) pager.getAdapter();
-                if(adapter != null){
+                if(adapter != null) {
                     Log.e("FRAG POS", String.valueOf(position));
-                    BookEditFragment bookFrag = (BookEditFragment)adapter.instantiateItem(pager, position);
-                    if(bookFrag != null) {
-                        bookFrag.setBookFromUI();
+                    if (adapter.isEditable()) {
+                        BookEditFragment bookFrag = (BookEditFragment) adapter.instantiateItem(pager, position);
+
+                        if (bookFrag != null) {
+                            bookFrag.setBookFromUI();
+                        }
                     }
                 }
             }

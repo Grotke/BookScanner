@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".BookDetailFragment"
+    android:textSize="@dimen/_14sdp"
+    android:orientation="vertical">
+            <TextView
+                android:id="@+id/bookdetail_book_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_20sdp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="Hello" />
+
+            <ImageView
+                android:id="@+id/bookdetail_book_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:src="@drawable/no_image"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/bookdetail_book_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="4"
+                android:text="This is a book description."
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"/>
+
+            <TextView
+                android:id="@+id/bookdetail_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Location: Keep"
+                android:textSize="@dimen/_12sdp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/bookdetail_isbn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ISBN: 098273834948"
+                        android:textSize="@dimen/_12sdp"/>
+                    <TextView
+                        android:id="@+id/bookdetail_pages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="150 pages"
+                        android:textSize="@dimen/_12sdp"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/bookdetail_book_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0/5.0 (0 Reviews)"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:textSize="@dimen/_12sdp" />
+            <RatingBar
+                android:id="@+id/bookdetail_book_rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:stepSize="0.1"
+                android:rating="3.3" />
+            <TextView
+                android:id="@+id/bookdetail_scan_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
+                android:text="Last Updated: Jan 21, 2016"/>
+</LinearLayout>
