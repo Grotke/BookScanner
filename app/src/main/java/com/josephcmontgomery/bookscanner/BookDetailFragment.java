@@ -34,14 +34,12 @@ public class BookDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         parentView = inflater.inflate(R.layout.fragment_book_detail, container, false);
         Bundle bundle = getArguments();
         if(bundle == null){
             return parentView;
         }
         book = (BookInformation) bundle.getSerializable("bookInfo");
-        //setBookUpdateTime();
         setUIFields();
         return parentView;
     }
@@ -65,13 +63,11 @@ public class BookDetailFragment extends Fragment {
     }
 
     private void setTitle(){
-        //XML bugged, must set InputType in code.
         TextView title = (TextView) parentView.findViewById(R.id.bookdetail_book_title);
         title.setText(book.title);
     }
 
     private void setLocation(){
-        //XML bugged, must set InputType in code.
         TextView locationEdit = (TextView) parentView.findViewById(R.id.bookdetail_location);
         locationEdit.setText("Location: " + book.location);
     }
@@ -91,10 +87,6 @@ public class BookDetailFragment extends Fragment {
         isbn.setText("ISBN: " + book.isbn);
     }
 
-    private void setNumRatings(){
-        TextView numRatings = (TextView) parentView.findViewById(R.id.bookdetail_book_rating);
-        numRatings.setText(String.valueOf(book.averageRating) + "/5.0 (" + String.valueOf(book.ratingsCount) + " reviews)");
-    }
     private void setDescription(){
         TextView description = (TextView) parentView.findViewById(R.id.bookdetail_book_description);
         description.setText(book.description);
@@ -104,4 +96,8 @@ public class BookDetailFragment extends Fragment {
         pageCount.setText(String.valueOf(book.pageCount) + " pages");
     }
 
+    private void setNumRatings(){
+        TextView numRatings = (TextView) parentView.findViewById(R.id.bookdetail_book_rating);
+        numRatings.setText(String.valueOf(book.averageRating) + "/5.0 (" + String.valueOf(book.ratingsCount) + " reviews)");
+    }
 }
