@@ -66,7 +66,7 @@ public class BookListFragment extends Fragment {
         }
         else {
             Cursor cursor = Database.getAllBooks(getActivity().getApplicationContext());
-            DataCursorAdapter dataAdapter = new DataCursorAdapter(getActivity(), cursor, DataCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+            BookListCursorAdapter dataAdapter = new BookListCursorAdapter(getActivity(), cursor, BookListCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
             listView.setAdapter(dataAdapter);
         }
     }

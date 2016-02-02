@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.josephcmontgomery.bookscanner.Database.BookScannerContract;
 import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 
-public class DataCursorAdapter extends CursorAdapter {
-    public DataCursorAdapter(Context context, Cursor cursor, int flags){
+public class BookListCursorAdapter extends CursorAdapter {
+    public BookListCursorAdapter(Context context, Cursor cursor, int flags){
         super(context, cursor, flags);
     }
 
