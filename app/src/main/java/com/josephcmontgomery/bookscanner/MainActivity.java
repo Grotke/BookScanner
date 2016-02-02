@@ -37,8 +37,8 @@ import java.util.ArrayList;
 //TODO: Make sure back button doesn't take to previous screens on book location editing screen.
 public class MainActivity extends AppCompatActivity{
     ArrayList<BookInformation> books;
-    private final int BOOK_EDIT_REQUEST = 1;
-    private final int BOOK_SWIPE_EDIT_REQUEST = 2;
+    private final int CONTINUE_SCANNING = 1;
+    private final int BACK_TO_MAIN_MENU = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +78,8 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.view_books_button) {
-                    //Intent intent = new Intent(MainActivity.this, BookListActivity.class);
-                    Intent bookEditIntent = new Intent(MainActivity.this, BookViewerActivity.class);
-                    startActivity(bookEditIntent);
+                    Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
+                    startActivity(bookViewerIntent);
                 }
             }
         });
@@ -91,10 +90,10 @@ public class MainActivity extends AppCompatActivity{
         if(scanningResult != null){
             processScanResult(resultCode, scanningResult);
         }
-        else if (requestCode == BOOK_EDIT_REQUEST){
+        else if (requestCode == CONTINUE_SCANNING){
             startScan(MainActivity.this);
         }
-        else if (requestCode == BOOK_SWIPE_EDIT_REQUEST){
+        else if (requestCode == BACK_TO_MAIN_MENU){
             books.clear();
         }
         else{
@@ -108,11 +107,11 @@ public class MainActivity extends AppCompatActivity{
             String isbn = scanningResult.getContents();
             new GetBookByISBN().execute(isbn);
         }
-        if(resultCode == RESULT_CANCELED && !books.isEmpty()){
-            Intent bookEditIntent = new Intent(MainActivity.this, BookViewerActivity.class);
-            bookEditIntent.putExtra("books", books);
-            bookEditIntent.putExtra("options", ViewMode.EDIT_MODE | ViewMode.LIST_MODE);
-            startActivityForResult(bookEditIntent, BOOK_SWIPE_EDIT_REQUEST);
+        else if(resultCode == RESULT_CANCELED && !books.isEmpty()){
+            Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
+            bookViewerIntent.putExtra("books", books);
+            bookViewerIntent.putExtra("options", ViewMode.EDIT_MODE | ViewMode.LIST_MODE);
+            startActivityForResult(bookViewerIntent, BACK_TO_MAIN_MENU);
         }
     }
 
@@ -144,14 +143,14 @@ public class MainActivity extends AppCompatActivity{
             if(book.title.trim().isEmpty()){
                 ArrayList<BookInformation> singleBook = new ArrayList<>();
                 singleBook.add(book);
-                Intent bookEditIntent = new Intent(MainActivity.this, BookViewerActivity.class);
-                bookEditIntent.putExtra("options", ViewMode.EDIT_MODE);
-                bookEditIntent.putExtra("books", singleBook);
-                startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
+                Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
+                bookViewerIntent.putExtra("options", ViewMode.EDIT_MODE);
+                bookViewerIntent.putExtra("books", singleBook);
+                startActivityForResult(bookViewerIntent, CONTINUE_SCANNING);
             }
             else{
                 books.add(book);
-                onActivityResult(BOOK_EDIT_REQUEST, RESULT_OK, null);
+                onActivityResult(CONTINUE_SCANNING, RESULT_OK, null);
             }
         }
 
