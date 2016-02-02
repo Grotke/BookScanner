@@ -18,7 +18,7 @@ public class BookJsonParser {
         while (reader.hasNext()) {
             String name = reader.nextName();
             if (name.equals("items")) {
-                processItemArray(reader, book);
+                processFirstItem(reader, book);
             } else {
                 reader.skipValue();
             }
@@ -26,8 +26,7 @@ public class BookJsonParser {
         reader.endObject();
     }
 
-    private static void processItemArray(JsonReader reader, BookInformation book) throws Exception{
-            //Only read first item.
+    private static void processFirstItem(JsonReader reader, BookInformation book) throws Exception{
             reader.beginArray();
             processItem(reader, book);
             reader.endArray();
