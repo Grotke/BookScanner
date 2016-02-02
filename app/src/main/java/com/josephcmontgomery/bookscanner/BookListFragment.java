@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class BookListFragment extends Fragment {
     private OnBookListListener callback;
-
     private ListView listView;
 
     public interface OnBookListListener{
@@ -50,12 +49,16 @@ public class BookListFragment extends Fragment {
 
     @Override
     public void onResume() {
-        super.onResume();
         if (listView == null) {
             setUpListView();
         }
         listView.setAdapter(null);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        setDataSource();
+        super.onResume();
+    }
+
+    private void setDataSource(){
         Bundle bundle = getArguments();
         if(bundle != null && bundle.containsKey("books")){
             ArrayList<BookInformation> books = (ArrayList<BookInformation>) bundle.getSerializable("books");
@@ -79,5 +82,4 @@ public class BookListFragment extends Fragment {
                 }
         );
     }
-
 }
