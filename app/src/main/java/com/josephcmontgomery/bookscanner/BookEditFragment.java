@@ -26,7 +26,7 @@ public class BookEditFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static BookEditFragment newInstance(BookInformation book, boolean editable){
+    public static BookEditFragment newInstance(BookInformation book){
         BookEditFragment bookFrag = new BookEditFragment();
         Bundle args = new Bundle();
         args.putSerializable("bookInfo", book);

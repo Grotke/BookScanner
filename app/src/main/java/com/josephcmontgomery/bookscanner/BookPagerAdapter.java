@@ -9,28 +9,40 @@ import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 
 import java.util.ArrayList;
 
-public class BookEditPagerAdapter extends FragmentStatePagerAdapter{
+public class BookPagerAdapter extends FragmentStatePagerAdapter{
     private Cursor cursor;
     private ArrayList<BookInformation> books;
     private boolean editable = false;
 
-    public BookEditPagerAdapter(FragmentManager fm){
+    public BookPagerAdapter(FragmentManager fm){
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
+        BookInformation book = getBookFromDataSource(position);
+
+        return createProperFragment(book);
+    }
+
+    private BookInformation getBookFromDataSource(int position){
         BookInformation book;
         if(cursor != null){
             cursor.moveToPosition(position);
             book = BookInformation.packBookFromCursor(cursor);
         }
-        else{
+        else if(!books.isEmpty()){
             book = books.get(position);
         }
+        else{
+            book = new BookInformation();
+        }
+        return book;
+    }
 
+    private Fragment createProperFragment(BookInformation book){
         if(editable) {
-            return BookEditFragment.newInstance(book, editable);
+            return BookEditFragment.newInstance(book);
         }
         else{
             return BookDetailFragment.newInstance(book);
@@ -65,5 +77,4 @@ public class BookEditPagerAdapter extends FragmentStatePagerAdapter{
     public boolean isEditable(){
         return editable;
     }
-
 }
