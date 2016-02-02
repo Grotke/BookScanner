@@ -3,7 +3,7 @@ package com.josephcmontgomery.bookscanner.Database;
 import android.provider.BaseColumns;
 
 public final class BookScannerContract {
-    public BookScannerContract(){}
+    private BookScannerContract(){}
 
     public static abstract class Books implements BaseColumns {
         public static final String TABLE_NAME = "books";

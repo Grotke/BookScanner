@@ -4,15 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Joseph on 1/30/2016.
- */
 public class BookCache {
     private static HashMap<String, BookInformation> books = new HashMap<>();
 
-    private BookCache(){
-
-    }
+    private BookCache(){}
 
     public static void addBook(BookInformation book){
         books.put(book.isbn, book);

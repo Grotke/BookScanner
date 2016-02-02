@@ -11,6 +11,8 @@ import java.util.HashMap;
 public class ImageFetcher {
     private static HashMap<String, Drawable> cache = new HashMap<>();
 
+    private ImageFetcher(){}
+
     public static void loadImage(final String imageUrl, final ImageView image){
         if(imageUrl.isEmpty()){
             return;

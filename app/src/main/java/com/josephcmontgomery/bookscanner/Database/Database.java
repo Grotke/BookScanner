@@ -10,6 +10,8 @@ import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 public class Database {
     private static SQLiteDatabase db = null;
 
+    private Database(){}
+
     public static void insertBook(BookInformation book, Context context){
         if(db == null){
             initializeDB(context);
