@@ -18,6 +18,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 import com.josephcmontgomery.bookscanner.Tools.BookJsonParser;
+import com.josephcmontgomery.bookscanner.Tools.ViewMode;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity{
         if(resultCode == RESULT_CANCELED && !books.isEmpty()){
             Intent bookEditIntent = new Intent(MainActivity.this, BookViewerActivity.class);
             bookEditIntent.putExtra("books", books);
+            bookEditIntent.putExtra("options", ViewMode.EDIT_MODE | ViewMode.LIST_MODE);
             startActivityForResult(bookEditIntent, BOOK_SWIPE_EDIT_REQUEST);
         }
     }
@@ -143,7 +145,7 @@ public class MainActivity extends AppCompatActivity{
                 ArrayList<BookInformation> singleBook = new ArrayList<>();
                 singleBook.add(book);
                 Intent bookEditIntent = new Intent(MainActivity.this, BookViewerActivity.class);
-                bookEditIntent.putExtra("useList", false);
+                bookEditIntent.putExtra("options", ViewMode.EDIT_MODE);
                 bookEditIntent.putExtra("books", singleBook);
                 startActivityForResult(bookEditIntent, BOOK_EDIT_REQUEST);
             }

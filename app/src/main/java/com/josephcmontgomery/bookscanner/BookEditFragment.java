@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -77,14 +76,14 @@ public class BookEditFragment extends Fragment {
             editable = true;
         }
         if(bundle.getBoolean("deleteEnabled")){
-            setUpDeleteButton();
+            //setUpDeleteButton();
             editable = true;
         }
         //setBookUpdateTime();
         setUIFields(view, editable);
 
-        setUpSaveButton();
-        setUpCancelButton();
+        //setUpSaveButton();
+        //setUpCancelButton();
         return view;
     }
 
@@ -150,13 +149,13 @@ public class BookEditFragment extends Fragment {
         numRatings.setText(String.valueOf(book.averageRating) + "/5.0 (" + String.valueOf(book.ratingsCount) + " reviews)");
     }
 
-    private void setUpSaveButton(){
-        Button saveBtn = (Button) getActivity().findViewById(R.id.bookedit_save_button);
+   /* private void setUpSaveButton(){
+        Button saveBtn = (Button) getActivity().findViewById(R.id.bookeditsave_button);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.bookedit_save_button) {
-                    /*EditText location = (EditText) parentView.findViewById(R.id.bookedit_location_edit);
+                    EditText location = (EditText) parentView.findViewById(R.id.bookedit_location_edit);
                     EditText title = (EditText) parentView.findViewById(R.id.bookedit_book_title);
                     String titleStr = title.getText().toString().trim();
                     if (titleStr.isEmpty()) {
@@ -166,7 +165,7 @@ public class BookEditFragment extends Fragment {
                         book.location = location.getText().toString().trim();
                         Database.insertBook(book, getContext());
                         callback.onSave();
-                    }*/
+                    }
                     setBookFromUI();
                     callback.onSave();
                 }
@@ -197,7 +196,7 @@ public class BookEditFragment extends Fragment {
                 }
             }
         });
-    }
+    } */
 
     public BookInformation getBook(){
         setBookFromUI();

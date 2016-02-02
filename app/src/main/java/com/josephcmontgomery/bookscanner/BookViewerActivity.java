@@ -10,17 +10,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.josephcmontgomery.bookscanner.Database.Database;
 import com.josephcmontgomery.bookscanner.Tools.BookCache;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
+import com.josephcmontgomery.bookscanner.Tools.ViewMode;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class BookViewerActivity extends AppCompatActivity implements BookEditFragment.OnBookEditListener, BookListFragment.OnBookListListener {
-    private final int BOOK_SWIPE_EDIT_REQUEST = 2;
+    private int currentMode;
     private ViewPager pager;
 
     @Override
@@ -29,7 +31,13 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
         setContentView(R.layout.activity_book_viewer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        boolean useList = getIntent().getBooleanExtra("useList", true);
+        currentMode = getIntent().getIntExtra("options", ViewMode.LIST_MODE | ViewMode.DETAIL_MODE);
+        buildView();
+    }
+
+    private void buildView(){
+        setUpButtons();
+        boolean useList = (currentMode & ViewMode.LIST_MODE) != 0;
         if(useList) {
             attachBookListFragment();
         }
@@ -59,6 +67,9 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setVisibility(View.VISIBLE);
+        if((currentMode & ViewMode.EDIT_MODE) != 0){
+            adapter.setEditable(true);
+        }
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -68,7 +79,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 BookEditPagerAdapter adapter = (BookEditPagerAdapter) pager.getAdapter();
-                if(adapter != null) {
+                if (adapter != null) {
                     Log.e("FRAG POS", String.valueOf(position));
                     if (adapter.isEditable()) {
                         BookEditFragment bookFrag = (BookEditFragment) adapter.instantiateItem(pager, position);
@@ -86,8 +97,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
         });
         if(getIntent().getSerializableExtra("books") == null){
             adapter.setBooks(Database.getAllBooks(getApplicationContext()));
-        }
-        else{
+        } else {
             adapter.setBooks((ArrayList<BookInformation>) getIntent().getSerializableExtra("books"));
         }
     }
@@ -147,6 +157,49 @@ public class BookViewerActivity extends AppCompatActivity implements BookEditFra
         if(listFrag != null){
             listFrag.onResume();
         }
+    }
+
+    private void setUpButtons(){
+        setUpSaveButton();
+        setUpCancelButton();
+        setUpDeleteButton();
+    }
+
+    private void setUpSaveButton(){
+        Button saveBtn = (Button) findViewById(R.id.save_button);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.save_button) {
+                    onSave();
+                }
+            }
+        });
+    }
+
+    private void setUpCancelButton(){
+        Button cancelBtn = (Button) findViewById(R.id.cancel_button);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.cancel_button) {
+                    onCancel();
+                }
+            }
+        });
+    }
+
+    private void setUpDeleteButton(){
+        Button deleteBtn = (Button) findViewById(R.id.delete_button);
+        deleteBtn.setVisibility(View.VISIBLE);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.delete_button) {
+                    //onDelete(book);
+                }
+            }
+        });
     }
 
 }

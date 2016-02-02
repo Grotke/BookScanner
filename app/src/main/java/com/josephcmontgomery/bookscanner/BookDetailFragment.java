@@ -24,21 +24,6 @@ public class BookDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    /*@Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            callback = (OnBookEditListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnBookEditListener");
-        }
-    }*/
-
     public static BookDetailFragment newInstance(BookInformation book){
         BookDetailFragment bookFrag = new BookDetailFragment();
         Bundle args = new Bundle();
