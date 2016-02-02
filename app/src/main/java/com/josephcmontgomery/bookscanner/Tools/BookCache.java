@@ -6,14 +6,20 @@ import java.util.Map;
 
 public class BookCache {
     private static HashMap<String, BookInformation> books = new HashMap<>();
+    private static boolean booksHaveBeenRequested = false;
 
     private BookCache(){}
 
     public static void addBook(BookInformation book){
+        if(booksHaveBeenRequested){
+            books.clear();
+            booksHaveBeenRequested = false;
+        }
         books.put(book.isbn, book);
     }
 
     public static ArrayList<BookInformation> getBooks(){
+        booksHaveBeenRequested = true;
         ArrayList<BookInformation> returnBooks = new ArrayList<>(books.size());
         for (Map.Entry<String, BookInformation> entry : books.entrySet())
         {
@@ -24,9 +30,5 @@ public class BookCache {
 
     public static void removeBook(BookInformation book){
         books.remove(book.isbn);
-    }
-
-    public static void clearBooks(){
-        books.clear();
     }
 }
