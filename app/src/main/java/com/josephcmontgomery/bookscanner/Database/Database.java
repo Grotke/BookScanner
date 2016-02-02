@@ -30,17 +30,13 @@ public class Database {
     }
 
     public static Cursor getAllBooks(Context context){
-        String getAllBooksQuery = "select * from " + BookScannerContract.Books.TABLE_NAME + " order by " + BookScannerContract.Books.COLUMN_NAME_TITLE + " ASC";
         if(db == null){
             initializeDB(context);
         }
-        return db.rawQuery(getAllBooksQuery, null);
+        return db.query(BookScannerContract.Books.TABLE_NAME, null, null, null, null, null, BookScannerContract.Books.COLUMN_NAME_TITLE + " ASC");
     }
 
     private static void initializeDB(Context context){
-        //Delete database for debugging purposes.
-        //Undelete database for rapid UI tests.
-        //context.deleteDatabase(BookScannerDbHelper.DATABASE_NAME);
         BookScannerDbHelper helper = new BookScannerDbHelper(context);
         db = helper.getWritableDatabase();
     }
@@ -57,9 +53,5 @@ public class Database {
         values.put(BookScannerContract.Books.COLUMN_NAME_IMAGE_URL, book.imageURL);
         values.put(BookScannerContract.Books.COLUMN_NAME_LOCATION, book.location);
         return values;
-    }
-
-    public static void close(){
-        db.close();
     }
 }
