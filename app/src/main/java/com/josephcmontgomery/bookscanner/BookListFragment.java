@@ -62,7 +62,9 @@ public class BookListFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null && bundle.containsKey("books")){
             ArrayList<BookInformation> books = (ArrayList<BookInformation>) bundle.getSerializable("books");
-            listView.setAdapter(new BookListAdapter(getContext(), R.layout.list_item, books));
+            BookListAdapter adapter = new BookListAdapter(getContext(), R.layout.list_item, books);
+            listView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
         else {
             Cursor cursor = Database.getAllBooks(getActivity().getApplicationContext());
