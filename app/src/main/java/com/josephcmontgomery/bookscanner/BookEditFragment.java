@@ -157,4 +157,9 @@ public class BookEditFragment extends Fragment {
         setBookFromUI();
         super.onPause();
     }
+
+    public BookInformation getBook(){
+        setBookFromUI();
+        return book;
+    }
 }

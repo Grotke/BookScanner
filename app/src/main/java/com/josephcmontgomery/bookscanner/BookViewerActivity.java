@@ -1,6 +1,7 @@
 package com.josephcmontgomery.bookscanner;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -73,16 +74,24 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         ft.commit();
     }
 
+    private void detachBookListFragment(){
+        findViewById(R.id.book_list_container).setVisibility(View.GONE);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.book_list_container);
+        if(fragment != null) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
+    }
+
     private void setUpViewPager(int position) {
         BookPagerAdapter adapter = new BookPagerAdapter(getSupportFragmentManager());
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
         pager.setVisibility(View.VISIBLE);
-        if (currentModeIs(ViewMode.EDIT_MODE)) {
+        if (!currentModeIs(ViewMode.DETAIL_MODE)) {
             adapter.setEditable(true);
         }
         if (getIntent().getSerializableExtra("books") == null) {
-            adapter.setBooks(Database.getAllBooks(getApplicationContext()));
+            adapter.setBooks(getApplicationContext());
         } else {
             adapter.setBooks((ArrayList<BookInformation>) getIntent().getSerializableExtra("books"));
         }
@@ -117,7 +126,8 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
     }
 
     public void onBookSelected(int position){
-        findViewById(R.id.book_list_container).setVisibility(View.GONE);
+        //findViewById(R.id.book_list_container).setVisibility(View.GONE);
+        detachBookListFragment();
         setMode(ViewMode.DETAIL_MODE);
         setUpViewPager(position);
         invalidateOptionsMenu();
@@ -143,13 +153,18 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         }
     }
 
+    private void onDelete(){
+        BookPagerAdapter adapter = (BookPagerAdapter) pager.getAdapter();
+        adapter.removeBook(pager.getCurrentItem());
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         if(currentModeIs(ViewMode.DETAIL_MODE)){
             getMenuInflater().inflate(R.menu.menu_detail, menu);
         }
-        else if(currentModeIs(ViewMode.EDIT_MODE)){
+        else if(currentModeIs(ViewMode.EDIT_MODE) || currentModeIs(ViewMode.ADD_MODE)){
             getMenuInflater().inflate(R.menu.menu_edit, menu);
         }
         else {
@@ -171,12 +186,18 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         }
         if(id == R.id.save_button){
             onSave();
+            if(currentModeIs(ViewMode.ADD_MODE)){
+                finish();
+            }
             setMode(ViewMode.LIST_MODE);
             pager.setVisibility(View.GONE);
             attachBookListFragment();
             invalidateOptionsMenu();
         }
         if(id == R.id.delete_button){
+            int nextPosition = getPositionAfterDelete();
+            onDelete();
+            setUpViewPager(nextPosition);
         }
         if(id == R.id.edit_button) {
             setMode(ViewMode.EDIT_MODE);
@@ -190,13 +211,20 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         return super.onOptionsItemSelected(item);
     }
 
+    private int getPositionAfterDelete(){
+        if(pager.getCurrentItem() == pager.getChildCount() - 1){
+            return pager.getCurrentItem() - 1;
+        }
+        return pager.getCurrentItem();
+    }
+
     @Override
     public void onBackPressed(){
-        if(currentModeIs(ViewMode.LIST_MODE)){
+        BookCache.clearBooks();
+        if(currentModeIs(ViewMode.LIST_MODE) || currentModeIs(ViewMode.ADD_MODE)){
             finish();
         }
         else {
-            BookCache.clearBooks();
             setMode(ViewMode.LIST_MODE);
             pager.setVisibility(View.GONE);
             attachBookListFragment();

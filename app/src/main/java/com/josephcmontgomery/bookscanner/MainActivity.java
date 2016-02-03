@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity{
         else if(resultCode == RESULT_CANCELED && !books.isEmpty()){
             Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
             bookViewerIntent.putExtra("books", books);
-            bookViewerIntent.putExtra("options", ViewMode.EDIT_MODE | ViewMode.LIST_MODE);
+            bookViewerIntent.putExtra("options", ViewMode.ADD_MODE);
             startActivityForResult(bookViewerIntent, BACK_TO_MAIN_MENU);
         }
     }
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity{
                 ArrayList<BookInformation> singleBook = new ArrayList<>();
                 singleBook.add(book);
                 Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
-                bookViewerIntent.putExtra("options", ViewMode.EDIT_MODE);
+                bookViewerIntent.putExtra("options", ViewMode.ADD_MODE);
                 bookViewerIntent.putExtra("books", singleBook);
                 startActivityForResult(bookViewerIntent, CONTINUE_SCANNING);
             }

@@ -1,15 +1,19 @@
 package com.josephcmontgomery.bookscanner;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.josephcmontgomery.bookscanner.Database.Database;
+import com.josephcmontgomery.bookscanner.Tools.BookCache;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 
 import java.util.ArrayList;
 
 public class BookPagerAdapter extends FragmentStatePagerAdapter{
+    private Context context;
     private Cursor cursor;
     private ArrayList<BookInformation> books;
     private boolean editable = false;
@@ -65,9 +69,24 @@ public class BookPagerAdapter extends FragmentStatePagerAdapter{
         notifyDataSetChanged();
     }
 
-    public void setBooks(Cursor cursor){
-        this.cursor = cursor;
+    public void setBooks(Context context){
+        this.context = context;
+        cursor = Database.getAllBooks(context);
         notifyDataSetChanged();
+    }
+
+    public void removeBook(int position){
+        BookInformation book = getBookFromDataSource(position);
+        if(book.bookId != -1){
+            Database.deleteBookById(book.bookId, context);
+            cursor = Database.getAllBooks(context);
+            notifyDataSetChanged();
+        }
+        else{
+            books.remove(position);
+            notifyDataSetChanged();
+        }
+        BookCache.removeBook(book);
     }
 
     public void setEditable(boolean editable){
