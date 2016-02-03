@@ -12,7 +12,7 @@ public class BookCache {
 
     public static void addBook(BookInformation book){
         if(booksHaveBeenRequested){
-            books.clear();
+            clearBooks();
             booksHaveBeenRequested = false;
         }
         books.put(book.isbn, book);
@@ -28,6 +28,9 @@ public class BookCache {
         return returnBooks;
     }
 
+    public static void clearBooks(){
+        books.clear();
+    }
     public static void removeBook(BookInformation book){
         books.remove(book.isbn);
     }

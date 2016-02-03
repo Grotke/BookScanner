@@ -202,6 +202,12 @@ public class MainActivity extends AppCompatActivity{
         if (id == R.id.action_settings) {
             return true;
         }
+        if(id == R.id.save_button){
+            Log.e("SAVE PRESSED", "Pressed save button");
+        }
+        if(id == R.id.delete_button){
+            Log.e("DELETE PRESSED", "Pressed delete button");
+        }
 
         return super.onOptionsItemSelected(item);
     }

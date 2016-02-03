@@ -1,6 +1,7 @@
 package com.josephcmontgomery.bookscanner;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -9,6 +10,8 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -35,13 +38,25 @@ public class BookEditFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        setBookFromUI();
+        outState.putSerializable("book", book);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bookedit_fragment, container, false);
         Bundle bundle = getArguments();
         if(bundle == null){
             return view;
         }
-        book = (BookInformation) bundle.getSerializable("bookInfo");
+        if(savedInstanceState != null && savedInstanceState.containsKey("book")){
+            book = (BookInformation) savedInstanceState.getSerializable("book");
+        }
+        else {
+            book = (BookInformation) bundle.getSerializable("bookInfo");
+        }
         BookCache.addBook(book);
         setUIFields();
 
@@ -69,6 +84,10 @@ public class BookEditFragment extends Fragment {
         EditText titleEdit = (EditText) view.findViewById(R.id.bookedit_book_title);
         titleEdit.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         titleEdit.setText(book.title);
+        if(!book.title.isEmpty()){
+            titleEdit.clearFocus();
+        }
+        setUpTitleListener(titleEdit);
     }
 
     private void setLocationEdit(){
@@ -77,6 +96,30 @@ public class BookEditFragment extends Fragment {
         locationEdit.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         locationEdit.setText(book.location);
         locationEdit.requestFocus();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        setUpLocationListener(locationEdit);
+    }
+
+    private void setUpLocationListener(EditText locationEdit){
+        locationEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (v.getId() == R.id.bookedit_location_edit && !hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+    }
+
+    private void setUpTitleListener(EditText titleEdit){
+        titleEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (v.getId() == R.id.bookedit_book_title && !hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
     }
 
     private void setRatingBar(){
@@ -97,11 +140,6 @@ public class BookEditFragment extends Fragment {
     private void setNumRatings(){
         TextView numRatings = (TextView) view.findViewById(R.id.bookedit_book_rating);
         numRatings.setText(String.valueOf(book.averageRating) + "/5.0 (" + String.valueOf(book.ratingsCount) + " reviews)");
-    }
-
-    public BookInformation getBook(){
-        setBookFromUI();
-        return book;
     }
 
     public void setBookFromUI() {

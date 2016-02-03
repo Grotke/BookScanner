@@ -33,6 +33,7 @@
         android:layout_marginTop="@dimen/_17sdp"
         android:singleLine="true"
         android:scrollHorizontally="true"
-        android:ellipsize="end" />
+        android:ellipsize="end"
+        android:background="#ffffff"/>
 
 </RelativeLayout>

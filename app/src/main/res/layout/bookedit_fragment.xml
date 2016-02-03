@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/_20sdp"
         android:layout_centerHorizontal="true"
-        />
+        android:gravity="center" />
 
     <ImageView
         android:id="@+id/bookedit_book_image"
