@@ -5,6 +5,8 @@ public class ViewMode {
     public static final int DETAIL_MODE = 2;
     public static final int LIST_MODE = 4;
     public static final int ADD_MODE = 8;
+    public static final int DUAL_MODE = 16;
+
 
     private ViewMode(){}
 }

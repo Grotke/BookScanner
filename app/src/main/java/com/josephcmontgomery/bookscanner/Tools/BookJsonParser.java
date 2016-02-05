@@ -27,9 +27,12 @@ public class BookJsonParser {
     }
 
     private static void processFirstItem(JsonReader reader, BookInformation book) throws Exception{
-            reader.beginArray();
-            processItem(reader, book);
-            reader.endArray();
+        reader.beginArray();
+        processItem(reader, book);
+        while(reader.hasNext()){
+            reader.skipValue();
+        }
+        reader.endArray();
     }
 
     private static void processItem(JsonReader reader, BookInformation book) throws Exception{

@@ -1,5 +1,7 @@
 package com.josephcmontgomery.bookscanner;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,6 +38,16 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         } else {
             currentMode = getIntent().getIntExtra("options", ViewMode.LIST_MODE);
         }
+        if(deviceUsesDualPane()){
+            addMode(ViewMode.DUAL_MODE);
+            if(currentModeIs(ViewMode.LIST_MODE)){
+                removeMode(ViewMode.LIST_MODE);
+                addMode(ViewMode.DETAIL_MODE);
+            }
+        }
+        else{
+            removeMode(ViewMode.DUAL_MODE);
+        }
         buildViews();
     }
 
@@ -46,9 +58,10 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
     }
 
     private void buildViews() {
-        if (currentModeIs(ViewMode.LIST_MODE)) {
+        if (currentModeIs(ViewMode.LIST_MODE) || currentModeIs(ViewMode.DUAL_MODE)) {
             attachBookListFragment();
-        } else {
+        }
+        if(!currentModeIs(ViewMode.LIST_MODE)){
             setUpViewPager(0);
         }
     }
@@ -123,10 +136,15 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
     }
 
     public void onBookSelected(int position) {
-        detachBookListFragment();
-        setMode(ViewMode.DETAIL_MODE);
-        setUpViewPager(position);
-        invalidateOptionsMenu();
+        if(currentModeIs(ViewMode.LIST_MODE)) {
+            detachBookListFragment();
+            setMode(ViewMode.DETAIL_MODE);
+            setUpViewPager(position);
+            invalidateOptionsMenu();
+        }
+        else{
+            pager.setCurrentItem(position);
+        }
     }
 
     private void onSave() {
@@ -183,18 +201,38 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
             if (currentModeIs(ViewMode.ADD_MODE)) {
                 finish();
             }
-            setMode(ViewMode.LIST_MODE);
-            pager.setVisibility(View.GONE);
-            attachBookListFragment();
-            invalidateOptionsMenu();
+            if(!currentModeIs(ViewMode.DUAL_MODE)) {
+                setMode(ViewMode.LIST_MODE);
+                pager.setVisibility(View.GONE);
+                attachBookListFragment();
+                invalidateOptionsMenu();
+            }
+            else{
+                removeMode(ViewMode.EDIT_MODE);
+                addMode(ViewMode.DETAIL_MODE);
+                detachBookListFragment();
+                attachBookListFragment();
+                setUpViewPager(pager.getCurrentItem());
+                invalidateOptionsMenu();
+            }
         }
         if (id == R.id.delete_button) {
             int nextPosition = getPositionAfterDelete();
             onDelete();
             setUpViewPager(nextPosition);
+            if(currentModeIs(ViewMode.DUAL_MODE)){
+                detachBookListFragment();
+                attachBookListFragment();
+            }
         }
         if (id == R.id.edit_button) {
-            setMode(ViewMode.EDIT_MODE);
+            if(currentModeIs(ViewMode.DUAL_MODE)){
+                removeMode(ViewMode.DETAIL_MODE);
+                addMode(ViewMode.EDIT_MODE);
+            }
+            else {
+                setMode(ViewMode.EDIT_MODE);
+            }
             setUpViewPager(pager.getCurrentItem());
             invalidateOptionsMenu();
         }
@@ -215,14 +253,32 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
     @Override
     public void onBackPressed() {
         BookCache.clearBooks();
-        if (currentModeIs(ViewMode.LIST_MODE) || currentModeIs(ViewMode.ADD_MODE)) {
+        if (currentModeIs(ViewMode.LIST_MODE) || currentModeIs(ViewMode.ADD_MODE) || currentModeIs(ViewMode.DUAL_MODE | ViewMode.DETAIL_MODE)) {
             finish();
-        } else {
+        } else if (currentModeIs(ViewMode.DUAL_MODE | ViewMode.EDIT_MODE)){
+            setMode(ViewMode.DUAL_MODE | ViewMode.DETAIL_MODE);
+            setUpViewPager(pager.getCurrentItem());
+            invalidateOptionsMenu();
+        }
+        else {
             setMode(ViewMode.LIST_MODE);
             pager.setVisibility(View.GONE);
             attachBookListFragment();
             invalidateOptionsMenu();
         }
+    }
+
+    private boolean deviceUsesDualPane(){
+        Resources res = getResources();
+        return res.getBoolean(R.bool.dual_pane) && res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private void removeMode(int modeToRemove){
+        currentMode ^= modeToRemove;
+    }
+
+    private void addMode(int modeToRemove){
+        currentMode |= modeToRemove;
     }
 }
    /* @Override
