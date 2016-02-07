@@ -6,6 +6,11 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/delete_button"
+        android:icon="@drawable/ic_action_action_delete"
+        android:title="Delete"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/edit_button"
         android:icon="@drawable/ic_action_image_edit"
         android:title="Edit"

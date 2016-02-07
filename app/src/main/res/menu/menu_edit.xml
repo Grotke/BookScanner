@@ -6,13 +6,13 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/save_button"
-        android:icon="@drawable/ic_action_content_save"
-        android:title="Save"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/delete_button"
         android:icon="@drawable/ic_action_action_delete"
         android:title="Delete"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/save_button"
+        android:icon="@drawable/ic_action_content_save"
+        android:title="Save"
+        app:showAsAction="ifRoom" />
 </menu>
