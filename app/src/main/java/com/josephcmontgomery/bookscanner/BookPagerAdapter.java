@@ -96,4 +96,9 @@ public class BookPagerAdapter extends FragmentStatePagerAdapter{
     public boolean isEditable(){
         return editable;
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return String.valueOf(position+1) + "/" + getCount();
+    }
 }

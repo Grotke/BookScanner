@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,7 +79,6 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
     private void setToolbarTitle(){
         ActionBar bar = getSupportActionBar();
         if(currentModeIs(ViewMode.ADD_MODE)){
-            Log.e("ADD MODE SET", "Title for add mode set");
             bar.setTitle("Add Books");
         }
         else if (currentModeIs(ViewMode.EDIT_MODE)){
@@ -88,7 +86,6 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         }
         else{
             bar.setTitle("My Books");
-            Log.e("Default title set", "Default title");
         }
     }
 

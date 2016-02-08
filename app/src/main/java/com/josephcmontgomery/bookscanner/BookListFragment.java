@@ -54,23 +54,32 @@ public class BookListFragment extends Fragment {
         }
         listView.setAdapter(null);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        setDataSource();
+        int totalEntries = setDataSource();
+        /*String itemCount = String.valueOf(totalEntries);
+            if (totalEntries == 1) {
+                itemCount += " book";
+            } else {
+                itemCount += " books";
+            }
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(itemCount);*/
         super.onResume();
     }
 
-    private void setDataSource(){
+    private int setDataSource(){
         Bundle bundle = getArguments();
         if(bundle != null && bundle.containsKey("books")){
             ArrayList<BookInformation> books = (ArrayList<BookInformation>) bundle.getSerializable("books");
             BookListAdapter adapter = new BookListAdapter(getContext(), R.layout.list_item, books);
             listView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
+            return adapter.getCount();
         }
         else {
             Cursor cursor = Database.getAllBooks(getActivity().getApplicationContext());
             BookListCursorAdapter dataAdapter = new BookListCursorAdapter(getActivity(), cursor, BookListCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
             listView.setAdapter(dataAdapter);
             dataAdapter.notifyDataSetChanged();
+            return dataAdapter.getCount();
         }
     }
 
