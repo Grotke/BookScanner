@@ -83,9 +83,6 @@ public class BookEditFragment extends Fragment {
         EditText titleEdit = (EditText) view.findViewById(R.id.bookedit_book_title);
         titleEdit.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         titleEdit.setText(book.title);
-        if(!book.title.isEmpty()){
-            titleEdit.clearFocus();
-        }
         setUpTitleListener(titleEdit);
     }
 
@@ -94,7 +91,6 @@ public class BookEditFragment extends Fragment {
         EditText locationEdit = (EditText) view.findViewById(R.id.bookedit_location_edit);
         locationEdit.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
         locationEdit.setText(book.location);
-        locationEdit.requestFocus();
         setUpLocationListener(locationEdit);
     }
 

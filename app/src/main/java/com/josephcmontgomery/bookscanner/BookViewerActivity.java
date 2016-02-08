@@ -1,5 +1,6 @@
 package com.josephcmontgomery.bookscanner;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -7,11 +8,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.josephcmontgomery.bookscanner.Database.Database;
 import com.josephcmontgomery.bookscanner.Tools.BookCache;
@@ -30,9 +35,6 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_viewer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
-        setSupportActionBar(toolbar);
         if (savedInstanceState != null && savedInstanceState.containsKey("currentState")) {
             currentMode = savedInstanceState.getInt("currentState");
         } else {
@@ -48,6 +50,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         else{
             removeMode(ViewMode.DUAL_MODE);
         }
+        setUpToolbar();
         buildViews();
     }
 
@@ -63,6 +66,29 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         }
         if(!currentModeIs(ViewMode.LIST_MODE)){
             setUpViewPager(0);
+        }
+    }
+
+    private void setUpToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
+        setSupportActionBar(toolbar);
+        setToolbarTitle();
+    }
+
+
+    private void setToolbarTitle(){
+        ActionBar bar = getSupportActionBar();
+        if(currentModeIs(ViewMode.ADD_MODE)){
+            Log.e("ADD MODE SET", "Title for add mode set");
+            bar.setTitle("Add Books");
+        }
+        else if (currentModeIs(ViewMode.EDIT_MODE)){
+            bar.setTitle("Edit");
+        }
+        else{
+            bar.setTitle("My Books");
+            Log.e("Default title set", "Default title");
         }
     }
 
@@ -113,7 +139,36 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void onPageSelected(int state) {
+            public void onPageSelected(int position) {
+                BookPagerAdapter adapter = (BookPagerAdapter) pager.getAdapter();
+                if (adapter != null) {
+                    if (adapter.isEditable()) {
+                        BookEditFragment bookFrag = (BookEditFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
+                        if(bookFrag != null) {
+                            View view = bookFrag.getView();
+                            if(view != null) {
+                                EditText title = (EditText) view.findViewById(R.id.bookedit_book_title);
+                                if (title != null) {
+                                    EditText currentEdit;
+                                    if (title.getText().toString().trim().isEmpty()) {
+                                        currentEdit = title;
+                                        title.requestFocus();
+                                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        imm.showSoftInput(currentEdit, 0);
+                                    } else {
+                                        title.clearFocus();
+                                        currentEdit = (EditText) view.findViewById(R.id.bookedit_location_edit);
+                                        currentEdit.requestFocus();
+                                        if(currentEdit.getText().toString().trim().isEmpty()) {
+                                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                            imm.showSoftInput(currentEdit, 0);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             @Override
@@ -215,6 +270,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
                 setUpViewPager(pager.getCurrentItem());
                 invalidateOptionsMenu();
             }
+            setToolbarTitle();
         }
         if (id == R.id.delete_button) {
             int nextPosition = getPositionAfterDelete();
@@ -235,6 +291,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
             }
             setUpViewPager(pager.getCurrentItem());
             invalidateOptionsMenu();
+            setToolbarTitle();
         }
         if (id == android.R.id.home) {
             onBackPressed();
@@ -266,6 +323,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
             attachBookListFragment();
             invalidateOptionsMenu();
         }
+        setToolbarTitle();
     }
 
     private boolean deviceUsesDualPane(){
