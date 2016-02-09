@@ -21,6 +21,7 @@ public class BookListFragment extends Fragment {
 
     public interface OnBookListListener{
         void onBookSelected(int position);
+        void onBookCountAvailable(int bookCount);
     }
 
     public BookListFragment() {
@@ -54,33 +55,28 @@ public class BookListFragment extends Fragment {
         }
         listView.setAdapter(null);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        int totalEntries = setDataSource();
-        /*String itemCount = String.valueOf(totalEntries);
-            if (totalEntries == 1) {
-                itemCount += " book";
-            } else {
-                itemCount += " books";
-            }
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(itemCount);*/
+        setDataSource();
         super.onResume();
     }
 
-    private int setDataSource(){
+    private void setDataSource(){
+        int count;
         Bundle bundle = getArguments();
         if(bundle != null && bundle.containsKey("books")){
             ArrayList<BookInformation> books = (ArrayList<BookInformation>) bundle.getSerializable("books");
             BookListAdapter adapter = new BookListAdapter(getContext(), R.layout.list_item, books);
             listView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
-            return adapter.getCount();
+            count = adapter.getCount();
         }
         else {
             Cursor cursor = Database.getAllBooks(getActivity().getApplicationContext());
             BookListCursorAdapter dataAdapter = new BookListCursorAdapter(getActivity(), cursor, BookListCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
             listView.setAdapter(dataAdapter);
             dataAdapter.notifyDataSetChanged();
-            return dataAdapter.getCount();
+            count = dataAdapter.getCount();
         }
+        callback.onBookCountAvailable(count);
     }
 
     private void setUpListView(){

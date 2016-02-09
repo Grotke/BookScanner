@@ -28,6 +28,7 @@ import java.util.Date;
 
 public class BookViewerActivity extends AppCompatActivity implements BookListFragment.OnBookListListener {
     private int currentMode;
+    private BookListFragment bookListFrag;
     private ViewPager pager;
 
     @Override
@@ -68,6 +69,10 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         }
     }
 
+    public void onBookCountAvailable(int bookCount){
+        setBookCount(bookCount);
+    }
+
     private void setUpToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
@@ -101,9 +106,9 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         findViewById(R.id.book_list_container).setVisibility(View.VISIBLE);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        BookListFragment bookFrag = new BookListFragment();
-        bookFrag.setArguments(getIntent().getExtras());
-        ft.add(R.id.book_list_container, bookFrag);
+        bookListFrag = new BookListFragment();
+        bookListFrag.setArguments(getIntent().getExtras());
+        ft.add(R.id.book_list_container, bookListFrag);
         ft.commit();
     }
 
@@ -129,6 +134,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
             adapter.setBooks((ArrayList<BookInformation>) getIntent().getSerializableExtra("books"));
         }
         pager.setCurrentItem(position);
+        setBookCount(pager.getAdapter().getCount());
         setUpPagerListener();
     }
 
@@ -141,9 +147,9 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
                 if (adapter != null) {
                     if (adapter.isEditable()) {
                         BookEditFragment bookFrag = (BookEditFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
-                        if(bookFrag != null) {
+                        if (bookFrag != null) {
                             View view = bookFrag.getView();
-                            if(view != null) {
+                            if (view != null) {
                                 EditText title = (EditText) view.findViewById(R.id.bookedit_book_title);
                                 if (title != null) {
                                     EditText currentEdit;
@@ -156,7 +162,7 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
                                         title.clearFocus();
                                         currentEdit = (EditText) view.findViewById(R.id.bookedit_location_edit);
                                         currentEdit.requestFocus();
-                                        if(currentEdit.getText().toString().trim().isEmpty()) {
+                                        if (currentEdit.getText().toString().trim().isEmpty()) {
                                             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                             imm.showSoftInput(currentEdit, 0);
                                         }
@@ -222,6 +228,18 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
     private void onDelete() {
         BookPagerAdapter adapter = (BookPagerAdapter) pager.getAdapter();
         adapter.removeBook(pager.getCurrentItem());
+        setBookCount(adapter.getCount());
+    }
+
+    private void setBookCount(int numBooks){
+        String output = String.valueOf(numBooks);
+        if(numBooks == 1){
+            output += " book";
+        }
+        else{
+            output += " books";
+        }
+        getSupportActionBar().setSubtitle(output);
     }
 
     @Override
