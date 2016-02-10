@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="2"
-        android:layout_marginLeft="@dimen/_5sdp">
+        android:layout_marginLeft="@dimen/_10sdp">
 
 
                 <TextView
@@ -52,7 +52,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/location_edit_label"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:textSize="@dimen/_20sdp" />
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"/>
                 <EditText
                     android:id="@+id/bookedit_location_edit"
                     android:layout_width="match_parent"
@@ -62,14 +63,14 @@
                 android:id="@+id/bookedit_isbn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp" />
                 <TextView
                     android:id="@+id/bookedit_book_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
                 <RatingBar
                     android:id="@+id/bookedit_book_rating_bar"
                     android:layout_width="wrap_content"
@@ -81,7 +82,7 @@
             android:id="@+id/bookedit_scan_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
 </LinearLayout>
 </RelativeLayout>
