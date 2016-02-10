@@ -35,22 +35,25 @@
                     android:gravity="center" />
 
                 <TextView
-                    android:id="@+id/bookdetail_book_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="4"
-                    android:text="This is a book description."
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:textSize="@dimen/_12sdp"/>
-
-                <TextView
                     android:id="@+id/bookdetail_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="Location: Keep"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/bookdetail_book_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="4"
+                    android:ellipsize="end"
+                    android:text="This is a book description."
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:textSize="@dimen/_12sdp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0.0/5.0 (0 Reviews)"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:textSize="@dimen/_12sdp" />
                 <RatingBar
                     android:id="@+id/bookdetail_book_rating_bar"
