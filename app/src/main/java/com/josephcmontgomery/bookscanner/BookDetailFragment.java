@@ -16,6 +16,7 @@ import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 
 public class BookDetailFragment extends Fragment {
+    private boolean isTextViewClicked = false;
     private BookInformation book;
     private View parentView;
 
@@ -90,6 +91,18 @@ public class BookDetailFragment extends Fragment {
     private void setDescription(){
         TextView description = (TextView) parentView.findViewById(R.id.bookdetail_book_description);
         description.setText(book.description);
+        description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isTextViewClicked){
+                    ((TextView) v).setMaxLines(3);
+                    isTextViewClicked = false;
+                } else {
+                    ((TextView) v).setMaxLines(Integer.MAX_VALUE);
+                    isTextViewClicked = true;
+                }
+            }
+        });
     }
     private void setPageCount(){
         TextView pageCount = (TextView) parentView.findViewById(R.id.bookdetail_pages);

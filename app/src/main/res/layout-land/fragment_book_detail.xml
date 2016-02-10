@@ -21,37 +21,50 @@
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
                 android:text="Hello" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3">
 
             <ImageView
                 android:id="@+id/bookdetail_book_image"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/_150sdp"
                 android:src="@drawable/no_image"
-                android:gravity="center" />
-
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="2"
+                android:layout_marginLeft="@dimen/_10sdp">
+                <TextView
+                    android:id="@+id/bookdetail_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="Location: Keep"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_12sdp"/>
             <TextView
                 android:id="@+id/bookdetail_book_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="4"
+                android:maxLines="3"
                 android:text="This is a book description."
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:textSize="@dimen/_12sdp"/>
 
-            <TextView
-                android:id="@+id/bookdetail_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:text="Location: Keep"
-                android:textSize="@dimen/_12sdp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="vertical">
                     <TextView
                         android:id="@+id/bookdetail_isbn"
                         android:layout_width="wrap_content"
@@ -62,7 +75,6 @@
                         android:id="@+id/bookdetail_pages"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
                         android:text="150 pages"
                         android:textSize="@dimen/_12sdp"/>
             </LinearLayout>
@@ -71,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0.0/5.0 (0 Reviews)"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:textSize="@dimen/_12sdp" />
             <RatingBar
                 android:id="@+id/bookdetail_book_rating_bar"
@@ -87,4 +99,6 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:textSize="@dimen/_12sdp"
                 android:text="Last Updated: Jan 21, 2016"/>
+            </LinearLayout>
+            </LinearLayout>
 </LinearLayout>
