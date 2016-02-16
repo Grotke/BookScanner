@@ -9,10 +9,10 @@
         android:id="@+id/delete_button"
         android:icon="@drawable/ic_action_action_delete"
         android:title="Delete"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
     <item
         android:id="@+id/edit_button"
         android:icon="@drawable/ic_action_image_edit"
         android:title="Edit"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 </menu>
