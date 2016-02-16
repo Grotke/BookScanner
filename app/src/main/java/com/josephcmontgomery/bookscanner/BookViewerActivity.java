@@ -1,6 +1,5 @@
 package com.josephcmontgomery.bookscanner;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -14,8 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.josephcmontgomery.bookscanner.Database.Database;
 import com.josephcmontgomery.bookscanner.Tools.BookCache;
@@ -143,35 +140,6 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
 
             @Override
             public void onPageSelected(int position) {
-                BookPagerAdapter adapter = (BookPagerAdapter) pager.getAdapter();
-                if (adapter != null) {
-                    if (adapter.isEditable()) {
-                        BookEditFragment bookFrag = (BookEditFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
-                        if (bookFrag != null) {
-                            View view = bookFrag.getView();
-                            if (view != null) {
-                                EditText title = (EditText) view.findViewById(R.id.bookedit_book_title);
-                                if (title != null) {
-                                    EditText currentEdit;
-                                    if (title.getText().toString().trim().isEmpty()) {
-                                        currentEdit = title;
-                                        title.requestFocus();
-                                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                        imm.showSoftInput(currentEdit, 0);
-                                    } else {
-                                        title.clearFocus();
-                                        currentEdit = (EditText) view.findViewById(R.id.bookedit_location_edit);
-                                        currentEdit.requestFocus();
-                                        if (currentEdit.getText().toString().trim().isEmpty()) {
-                                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                            imm.showSoftInput(currentEdit, 0);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
 
             @Override
