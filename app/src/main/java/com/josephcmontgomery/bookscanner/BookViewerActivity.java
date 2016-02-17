@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +26,6 @@ import java.util.Date;
 
 public class BookViewerActivity extends AppCompatActivity implements BookListFragment.OnBookListListener {
     private int currentMode;
-    private BookListFragment bookListFrag;
     private ViewPager pager;
 
     @Override
@@ -43,9 +43,11 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
                 removeMode(ViewMode.LIST_MODE);
                 addMode(ViewMode.DETAIL_MODE);
             }
+            Log.d("BookCatalog", "Entered Dual Mode: " + ViewMode.convertToString(currentMode));
         }
         else{
             removeMode(ViewMode.DUAL_MODE);
+            Log.d("BookCatalog", "Exited Dual Mode: " + ViewMode.convertToString(currentMode));
         }
         setUpToolbar();
         buildViews();
@@ -59,9 +61,11 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
 
     private void buildViews() {
         if (currentModeIs(ViewMode.LIST_MODE) || currentModeIs(ViewMode.DUAL_MODE)) {
+            Log.d("BookCatalog", "Adding List Fragment: " + ViewMode.convertToString(currentMode));
             attachBookListFragment();
         }
         if(!currentModeIs(ViewMode.LIST_MODE)){
+            Log.d("BookCatalog", "Adding pager: " + ViewMode.convertToString(currentMode));
             setUpViewPager(0);
         }
     }
@@ -91,19 +95,13 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         }
     }
 
-    private boolean currentModeIs(int modeToCheck) {
-        return (currentMode & modeToCheck) != 0;
-    }
 
-    private void setMode(int mode) {
-        currentMode = mode;
-    }
 
     private void attachBookListFragment() {
         findViewById(R.id.book_list_container).setVisibility(View.VISIBLE);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        bookListFrag = new BookListFragment();
+        BookListFragment bookListFrag = new BookListFragment();
         bookListFrag.setArguments(getIntent().getExtras());
         ft.add(R.id.book_list_container, bookListFrag);
         ft.commit();
@@ -315,10 +313,19 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
     }
 
     private void removeMode(int modeToRemove){
-        currentMode ^= modeToRemove;
+        currentMode = ViewMode.removeMode(currentMode, modeToRemove);
     }
 
     private void addMode(int modeToAdd){
         currentMode |= modeToAdd;
+        currentMode = ViewMode.addMode(currentMode, modeToAdd);
+    }
+
+    private boolean currentModeIs(int modeToCheck) {
+        return ViewMode.currentModeIs(currentMode, modeToCheck);
+    }
+
+    private void setMode(int mode) {
+        currentMode = mode;
     }
 }
