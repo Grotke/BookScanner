@@ -21,21 +21,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BookListActivity"
-            android:label="@string/title_activity_data_view"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".BookEditActivity"
-            android:label="@string/title_activity_book_edit"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".BookEditSwipeActivity"
-            android:label="@string/title_activity_book_edit_scroll"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".BookViewerActivity"
             android:label="@string/title_activity_book_viewer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="Preferences.PreferencesActivity"
+            android:label="@string/title_activity_preferences"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

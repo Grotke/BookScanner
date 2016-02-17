@@ -1,5 +1,6 @@
 package com.josephcmontgomery.bookscanner;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.josephcmontgomery.bookscanner.Database.Database;
+import com.josephcmontgomery.bookscanner.Preferences.PreferencesActivity;
 import com.josephcmontgomery.bookscanner.Tools.BookCache;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 import com.josephcmontgomery.bookscanner.Tools.ViewMode;
@@ -230,7 +232,8 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, PreferencesActivity.class);
+            startActivity(intent);
         }
         if (id == R.id.save_button) {
             onSave();

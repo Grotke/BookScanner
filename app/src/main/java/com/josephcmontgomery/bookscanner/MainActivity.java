@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.JsonReader;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.josephcmontgomery.bookscanner.Preferences.PreferencesActivity;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 import com.josephcmontgomery.bookscanner.Tools.BookJsonParser;
 import com.josephcmontgomery.bookscanner.Tools.ViewMode;
@@ -117,7 +119,9 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void startScan(Activity launchActivity){
+        boolean beepEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_beep", true);
         IntentIntegrator scanIntegrator = new IntentIntegrator(launchActivity);
+        scanIntegrator.setBeepEnabled(beepEnabled);
         scanIntegrator.initiateScan();
     }
 
@@ -211,13 +215,8 @@ public class MainActivity extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-        }
-        if(id == R.id.save_button){
-            Log.e("SAVE PRESSED", "Pressed save button");
-        }
-        if(id == R.id.delete_button){
-            Log.e("DELETE PRESSED", "Pressed delete button");
+            Intent intent = new Intent(this, PreferencesActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
