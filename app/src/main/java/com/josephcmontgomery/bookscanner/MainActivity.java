@@ -1,6 +1,7 @@
 package com.josephcmontgomery.bookscanner;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -121,6 +122,13 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private class GetBookByISBN extends AsyncTask<String,Void,BookInformation>{
+        private ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+
+        @Override
+        protected void onPreExecute(){
+            this.dialog.setMessage("Fetching Book Info...");
+            this.dialog.show();
+        }
         protected BookInformation doInBackground(String... isbns) {
             InputStream inStream;
             BookInformation book = null;
@@ -140,6 +148,9 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(BookInformation book) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
             if(book.title.trim().isEmpty()){
                 ArrayList<BookInformation> singleBook = new ArrayList<>();
                 singleBook.add(book);

@@ -41,7 +41,7 @@ public class BookListAdapter extends ArrayAdapter<BookInformation> {
     private void setImage(View view, BookInformation book){
         final ImageView icon = (ImageView) view.findViewById(R.id.book_cover_image);
         final String imageUrl = book.imageURL;
-        ImageFetcher.loadImage(imageUrl, icon);
+        ImageFetcher.loadImage(imageUrl, icon, getContext());
     }
 
     private void setLocation(View view, BookInformation book){

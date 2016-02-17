@@ -13,8 +13,10 @@ import com.josephcmontgomery.bookscanner.Database.BookScannerContract;
 import com.josephcmontgomery.bookscanner.Tools.ImageFetcher;
 
 public class BookListCursorAdapter extends CursorAdapter {
+    private Context context;
     public BookListCursorAdapter(Context context, Cursor cursor, int flags){
         super(context, cursor, flags);
+        this.context = context;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class BookListCursorAdapter extends CursorAdapter {
     private void setImage(View view, Cursor cursor){
         final ImageView icon = (ImageView) view.findViewById(R.id.book_cover_image);
         final String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(BookScannerContract.Books.COLUMN_NAME_IMAGE_URL));
-        ImageFetcher.loadImage(imageUrl, icon);
+        ImageFetcher.loadImage(imageUrl, icon, context);
     }
 
     private void setLocation(View view, Cursor cursor){
