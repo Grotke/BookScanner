@@ -3,13 +3,11 @@ package com.josephcmontgomery.bookscanner;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.JsonReader;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,13 +18,8 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.josephcmontgomery.bookscanner.Preferences.PreferencesActivity;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
-import com.josephcmontgomery.bookscanner.Tools.BookJsonParser;
 import com.josephcmontgomery.bookscanner.Tools.ViewMode;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 //TODO: Handle database with non-isbn barcodes. Inform user of book not found. Add barcode library.
@@ -38,19 +31,40 @@ import java.util.ArrayList;
 //TODO: Profile performance on memory and cpu, and download size.
 //TODO: Add way to manually add book. Add way to add location and view all books scanned.
 //TODO: Make sure back button doesn't take to previous screens on book location editing screen.
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements TaskFragment.TaskListener{
+    private ProgressDialog dialog;
     ArrayList<BookInformation> books;
     private final int CONTINUE_SCANNING = 1;
     private final int BACK_TO_MAIN_MENU = 2;
+    private static final String TAG_TASK_FRAGMENT = "task_fragment";
+
+    private TaskFragment taskFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        dialog = new ProgressDialog(MainActivity.this);
+        if (savedInstanceState != null && savedInstanceState.containsKey("currentBooks")) {
+            books = (ArrayList<BookInformation>) savedInstanceState.getSerializable("currentBooks");
+        } else {
+            books = new ArrayList<>();
+        }
         setUpToolbar();
         setUpMenuButtons();
-        books = new ArrayList<>();
+        setUpTaskFragment();
+    }
+
+    private void setUpTaskFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        taskFragment = (TaskFragment) fm.findFragmentByTag(TAG_TASK_FRAGMENT);
+
+        // If the Fragment is non-null, then it is currently being
+        // retained across a configuration change.
+        if (taskFragment == null) {
+            taskFragment = new TaskFragment();
+            fm.beginTransaction().add(taskFragment, TAG_TASK_FRAGMENT).commit();
+        }
     }
 
     private void setUpToolbar(){
@@ -108,7 +122,7 @@ public class MainActivity extends AppCompatActivity{
     private void processScanResult(int resultCode, IntentResult scanningResult){
         if(resultCode == RESULT_OK) {
             String isbn = scanningResult.getContents();
-            new GetBookByISBN().execute(isbn);
+            taskFragment.launchBookTask(isbn);
         }
         else if(resultCode == RESULT_CANCELED && !books.isEmpty()){
             Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
@@ -123,80 +137,6 @@ public class MainActivity extends AppCompatActivity{
         IntentIntegrator scanIntegrator = new IntentIntegrator(launchActivity);
         scanIntegrator.setBeepEnabled(beepEnabled);
         scanIntegrator.initiateScan();
-    }
-
-    private class GetBookByISBN extends AsyncTask<String,Void,BookInformation>{
-        private ProgressDialog dialog = new ProgressDialog(MainActivity.this);
-
-        @Override
-        protected void onPreExecute(){
-            this.dialog.setMessage("Fetching Book Info...");
-            this.dialog.show();
-        }
-        protected BookInformation doInBackground(String... isbns) {
-            InputStream inStream;
-            BookInformation book = null;
-            for(String isbn: isbns) {
-                try {
-                    String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
-                    inStream = getBookSearchResults(url);
-                    book = parseJsonStream(inStream, isbn);
-                } catch (Exception e) {
-                    if (e.getMessage() != null) {
-                        Log.e("EXCEPTION", e.getMessage());
-                    }
-                }
-            }
-            return book;
-        }
-
-        @Override
-        protected void onPostExecute(BookInformation book) {
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            if(book.title.trim().isEmpty()){
-                ArrayList<BookInformation> singleBook = new ArrayList<>();
-                singleBook.add(book);
-                Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
-                bookViewerIntent.putExtra("options", ViewMode.ADD_MODE);
-                bookViewerIntent.putExtra("books", singleBook);
-                startActivityForResult(bookViewerIntent, CONTINUE_SCANNING);
-            }
-            else{
-                books.add(book);
-                onActivityResult(CONTINUE_SCANNING, RESULT_OK, null);
-            }
-        }
-
-        private BookInformation parseJsonStream(InputStream inStream, String isbn) throws Exception {
-            JsonReader reader = new JsonReader(new InputStreamReader(inStream, "UTF-8"));
-            try {
-                return BookJsonParser.processSearchResult(reader, isbn);
-            }
-            finally{
-                reader.close();
-            }
-        }
-
-        private InputStream getBookSearchResults(String inUrl) throws Exception{
-            HttpURLConnection conn = setUpHttpConnection(inUrl);
-            // Starts the query
-            conn.connect();
-            int response = conn.getResponseCode();
-            Log.d("RESPONSE CODE", "The response is: " + response);
-            return conn.getInputStream();
-        }
-
-        private HttpURLConnection setUpHttpConnection(String url) throws Exception {
-            URL outUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) outUrl.openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            return conn;
-        }
     }
 
     @Override
@@ -220,5 +160,44 @@ public class MainActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPreExecute() {
+        dialog.setMessage("Fetching Book Info...");
+        dialog.show();
+    }
+
+    @Override
+    public void onPostExecute(BookInformation book) {
+        if (dialog != null && dialog.isShowing()) {
+          dialog.dismiss();
+        }
+        if(book.title.trim().isEmpty()){
+            ArrayList<BookInformation> singleBook = new ArrayList<>();
+            singleBook.add(book);
+            Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
+            bookViewerIntent.putExtra("options", ViewMode.ADD_MODE);
+            bookViewerIntent.putExtra("books", singleBook);
+            startActivityForResult(bookViewerIntent, CONTINUE_SCANNING);
+        }
+        else{
+            books.add(book);
+            onActivityResult(CONTINUE_SCANNING, RESULT_OK, null);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("currentBooks", books);
+        super.onSaveInstanceState(outState);
     }
 }

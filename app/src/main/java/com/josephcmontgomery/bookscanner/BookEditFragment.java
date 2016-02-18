@@ -75,7 +75,7 @@ public class BookEditFragment extends Fragment {
 
     private void setImage(){
         ImageView icon = (ImageView) view.findViewById(R.id.bookedit_book_image);
-        ImageFetcher.loadImage(book.imageURL, icon, getActivity());
+        ImageFetcher.loadImage(book.imageURL, icon);
     }
 
     private void setTitleEdit(){

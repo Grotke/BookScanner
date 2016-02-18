@@ -25,7 +25,7 @@
             android:label="@string/title_activity_book_viewer"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="Preferences.PreferencesActivity"
+            android:name=".Preferences.PreferencesActivity"
             android:label="@string/title_activity_preferences"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

@@ -60,7 +60,7 @@ public class BookDetailFragment extends Fragment {
 
     private void setImage(){
         ImageView icon = (ImageView) parentView.findViewById(R.id.bookdetail_book_image);
-        ImageFetcher.loadImage(book.imageURL, icon, getActivity());
+        ImageFetcher.loadImage(book.imageURL, icon);
     }
 
     private void setTitle(){
