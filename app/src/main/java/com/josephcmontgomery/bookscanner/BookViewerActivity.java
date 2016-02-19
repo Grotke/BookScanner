@@ -15,11 +15,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.josephcmontgomery.bookscanner.Database.Database;
 import com.josephcmontgomery.bookscanner.Preferences.PreferencesActivity;
 import com.josephcmontgomery.bookscanner.Tools.BookCache;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
+import com.josephcmontgomery.bookscanner.Tools.InternetMonitor;
 import com.josephcmontgomery.bookscanner.Tools.ViewMode;
 
 import java.text.DateFormat;
@@ -50,6 +52,14 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
         else{
             removeMode(ViewMode.DUAL_MODE);
             Log.d("BookCatalog", "Exited Dual Mode: " + ViewMode.convertToString(currentMode));
+        }
+
+        if(!InternetMonitor.isConnected(getApplicationContext())) {
+            CharSequence text = "Can't get book images. No Internet.";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
         }
         setUpToolbar();
         buildViews();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,27 +8,28 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.josephcmontgomery.bookscanner.MainActivity"
     tools:showIn="@layout/activity_main">
+
+    <Button android:id="@+id/view_books_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_30sdp"
+        android:text="@string/view_books"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_gravity="center"
+        android:textColor="#ffffff"
+        android:background="@drawable/blue_button"/>
 
     <Button android:id="@+id/scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_30sdp"
         android:text="@string/scan"
-        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:textColor="#ffffff"
         android:background="@drawable/blue_button"
-        android:layout_centerHorizontal="true"/>
-    <Button android:id="@+id/view_books_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/_30sdp"
-        android:text="@string/view_books"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/scan_button"
-        android:textColor="#ffffff"
-        android:background="@drawable/blue_button"/>
-</RelativeLayout>
+        android:layout_gravity="center"/>
+</LinearLayout>

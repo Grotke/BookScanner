@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.JsonReader;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
 import com.josephcmontgomery.bookscanner.Tools.BookJsonParser;
+import com.josephcmontgomery.bookscanner.Tools.InternetMonitor;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -47,7 +49,16 @@ public class TaskFragment extends Fragment{
     }
 
     public void launchBookTask(String isbn){
-        new GetBookByISBN().execute(isbn);
+        if(InternetMonitor.isConnected(getContext())) {
+            new GetBookByISBN().execute(isbn);
+        }
+        else{
+            CharSequence text = "Can't get book. No Internet.";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast toast = Toast.makeText(getContext(), text, duration);
+            toast.show();
+        }
     }
 
     private class GetBookByISBN extends AsyncTask<String,Void,BookInformation> {
@@ -69,6 +80,7 @@ public class TaskFragment extends Fragment{
                     if (e.getMessage() != null) {
                         Log.e("EXCEPTION", e.getMessage());
                     }
+                    book = new BookInformation();
                 }
             }
             return book;
