@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.Task
     private void startScan(Activity launchActivity){
         boolean beepEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_beep", true);
         IntentIntegrator scanIntegrator = new IntentIntegrator(launchActivity);
+        scanIntegrator.addExtra("PROMPT_MESSAGE", "Scan a book's barcode to get data. BACK to finish.");
         scanIntegrator.setBeepEnabled(beepEnabled);
         scanIntegrator.initiateScan();
     }
