@@ -13,23 +13,23 @@
     tools:context="com.josephcmontgomery.bookscanner.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <Button android:id="@+id/view_books_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/_30sdp"
-        android:text="@string/view_books"
-        android:layout_marginTop="@dimen/_50sdp"
-        android:layout_gravity="center"
-        android:textColor="#ffffff"
-        android:background="@drawable/blue_button"/>
-
     <Button android:id="@+id/scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_30sdp"
         android:text="@string/scan"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_50sdp"
         android:textColor="#ffffff"
         android:background="@drawable/blue_button"
         android:layout_gravity="center"/>
+
+    <Button android:id="@+id/view_books_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_30sdp"
+        android:text="@string/view_books"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_gravity="center"
+        android:textColor="#ffffff"
+        android:background="@drawable/blue_button"/>
 </LinearLayout>
