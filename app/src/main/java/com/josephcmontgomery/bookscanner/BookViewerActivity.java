@@ -61,6 +61,10 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
             Toast toast = Toast.makeText(getApplicationContext(), text, duration);
             toast.show();
         }
+        if(getIntent().getBooleanExtra("notFound", false)){
+            Toast toast = Toast.makeText(getApplicationContext(), "Book Not Found.", Toast.LENGTH_LONG);
+            toast.show();
+        }
         setUpToolbar();
         buildViews();
     }

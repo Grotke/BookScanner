@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.Task
             Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
             bookViewerIntent.putExtra("options", ViewMode.ADD_MODE);
             bookViewerIntent.putExtra("books", singleBook);
+            bookViewerIntent.putExtra("notFound", true);
             startActivityForResult(bookViewerIntent, CONTINUE_SCANNING);
         }
         else{
