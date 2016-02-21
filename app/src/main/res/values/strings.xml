@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Book Catalog</string>
+    <string name="app_name">Book Itemizer</string>
     <string name="action_settings">Settings</string>
     <string name="scan">Add Books</string>
     <string name="view_books">View My Books</string>

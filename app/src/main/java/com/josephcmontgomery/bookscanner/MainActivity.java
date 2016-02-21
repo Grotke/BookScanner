@@ -22,15 +22,10 @@ import com.josephcmontgomery.bookscanner.Tools.ViewMode;
 
 import java.util.ArrayList;
 
-//TODO: Handle database with non-isbn barcodes. Inform user of book not found. Add barcode library.
-//TODO: Adjust for different screen sizes. Deal with no internet connection.
+//TODO: Add barcode library.
 //TODO: Figure out activity result fail error. Figure out error on exiting app.
-//TODO: Guard against SQL injection. Change database to persist.
-//TODO: Check security issues for mobile apps.
 //TODO: Get API key for Google Books. Check how it handles a lot of requests.
-//TODO: Profile performance on memory and cpu, and download size.
-//TODO: Add way to manually add book. Add way to add location and view all books scanned.
-//TODO: Make sure back button doesn't take to previous screens on book location editing screen.
+//TODO: Finalize name and get logo/promotional material.
 public class MainActivity extends AppCompatActivity implements TaskFragment.TaskListener{
     private ProgressDialog dialog;
     ArrayList<BookInformation> books;
