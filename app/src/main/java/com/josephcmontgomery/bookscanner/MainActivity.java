@@ -2,6 +2,7 @@ package com.josephcmontgomery.bookscanner;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,8 +17,10 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.josephcmontgomery.bookscanner.Database.Database;
 import com.josephcmontgomery.bookscanner.Preferences.PreferencesActivity;
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
+import com.josephcmontgomery.bookscanner.Tools.Testing;
 import com.josephcmontgomery.bookscanner.Tools.ViewMode;
 
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements TaskFragment.TaskListener{
     private ProgressDialog dialog;
     ArrayList<BookInformation> books;
+    private final int NUM_TEST_BOOKS = 2000;
     private final int CONTINUE_SCANNING = 1;
     private final int BACK_TO_MAIN_MENU = 2;
     private static final String TAG_TASK_FRAGMENT = "task_fragment";
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.Task
     private void setUpMenuButtons(){
         setUpScanButton();
         setUpViewButton();
+        setUpTestingButton();
     }
 
     private void setUpScanButton(){
@@ -84,12 +89,40 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.Task
         });
     }
 
+    private void setUpTestingButton(){
+        Button testBtn = (Button)findViewById(R.id.testing_button);
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.testing_button) {
+                    Database.nullDB();
+                    Testing.isTesting = true;
+                    //fillDBWithTestData(getApplicationContext());
+                    Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
+                    startActivity(bookViewerIntent);
+                }
+            }
+        });
+    }
+
+    private void fillDBWithTestData(Context context){
+        for(int i = 0; i < NUM_TEST_BOOKS; i++){
+            BookInformation book = new BookInformation();
+            book.title = "Book " + String.valueOf(i);
+            book.isbn = String.valueOf(i);
+            book.imageURL = "http://books.google.com/books/content?id=pmVOmpv2GzoC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api";
+            Database.insertBook(book, context);
+        }
+    }
+
     private void setUpViewButton(){
         Button viewBtn = (Button)findViewById(R.id.view_books_button);
         viewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.view_books_button) {
+                    Testing.isTesting = false;
+                    Database.nullDB();
                     Intent bookViewerIntent = new Intent(MainActivity.this, BookViewerActivity.class);
                     startActivity(bookViewerIntent);
                 }

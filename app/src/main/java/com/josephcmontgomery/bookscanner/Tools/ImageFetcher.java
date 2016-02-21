@@ -17,12 +17,25 @@ public class ImageFetcher {
         if(imageUrl.isEmpty()){
             return;
         }
+        //if(Testing.isTesting){
+            //setTestImage(imageUrl, image);
+        //}
+        //else{
+            setRealImage(imageUrl, image);
+        //}
+    }
+
+    private static void setRealImage(final String imageUrl, final ImageView image){
         if(cache.containsKey(imageUrl)){
             image.setImageDrawable(getDrawable(imageUrl));
         }
         else {
             setImageFromUrl(imageUrl, image);
         }
+    }
+
+    private static void setTestImage(final String imageUrl, final ImageView image){
+        setImageFromUrl(imageUrl, image);
     }
 
     private static void setImageFromUrl(final String imageUrl, final ImageView image){

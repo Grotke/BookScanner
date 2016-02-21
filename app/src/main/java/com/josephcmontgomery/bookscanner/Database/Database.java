@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.josephcmontgomery.bookscanner.Tools.BookInformation;
+import com.josephcmontgomery.bookscanner.Tools.Testing;
 
 public class Database {
+    private static boolean testing = false;
     private static SQLiteDatabase db = null;
 
     private Database(){}
@@ -39,7 +41,21 @@ public class Database {
     }
 
     private static void initializeDB(Context context){
+        if(Testing.isTesting){
+            initializeTestDB(context);
+        }
+        else{
+            initializeRealDB(context);
+        }
+    }
+    private static void initializeRealDB(Context context){
         BookScannerDbHelper helper = new BookScannerDbHelper(context);
+        db = helper.getWritableDatabase();
+    }
+
+    private static void initializeTestDB(Context context){
+        //context.deleteDatabase(TestBookScannerDbHelper.DATABASE_NAME);
+        TestBookScannerDbHelper helper = new TestBookScannerDbHelper(context);
         db = helper.getWritableDatabase();
     }
 
@@ -55,5 +71,9 @@ public class Database {
         values.put(BookScannerContract.Books.COLUMN_NAME_IMAGE_URL, book.imageURL);
         values.put(BookScannerContract.Books.COLUMN_NAME_LOCATION, book.location);
         return values;
+    }
+
+    public static void nullDB(){
+        db = null;
     }
 }
