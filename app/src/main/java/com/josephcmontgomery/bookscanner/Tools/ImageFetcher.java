@@ -10,12 +10,16 @@ import java.util.HashMap;
 
 public class ImageFetcher {
     private static HashMap<String, Drawable> cache = new HashMap<>();
+    private static final int MAX_CACHE_SIZE = 200;
 
     private ImageFetcher(){}
 
     public static void loadImage(final String imageUrl, final ImageView image){
         if(imageUrl.isEmpty()){
             return;
+        }
+        if(cache.size() >= MAX_CACHE_SIZE){
+            cache.clear();
         }
         if(cache.containsKey(imageUrl)){
             image.setImageDrawable(getDrawable(imageUrl));

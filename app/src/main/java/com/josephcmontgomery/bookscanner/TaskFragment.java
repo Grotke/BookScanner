@@ -73,7 +73,7 @@ public class TaskFragment extends Fragment{
             BookInformation book = null;
             for(String isbn: isbns) {
                 try {
-                    String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+                    String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn +"&key=" + DeveloperKey.DEVELOPER_KEY;
                     inStream = getBookSearchResults(url);
                     book = parseJsonStream(inStream, isbn);
                 } catch (Exception e) {
