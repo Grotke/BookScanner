@@ -22,7 +22,6 @@ import com.josephcmontgomery.bookscanner.Tools.ViewMode;
 
 import java.util.ArrayList;
 
-//TODO: Finalize name and get logo/promotional material.
 public class MainActivity extends AppCompatActivity implements TaskFragment.TaskListener{
     private ProgressDialog dialog;
     ArrayList<BookInformation> books;
