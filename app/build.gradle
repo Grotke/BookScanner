@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyPassword 'android'
+            storeFile file('C:/Users/Joseph/.android/debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "21.1.2"
-
     defaultConfig {
         applicationId "com.josephcmontgomery.bookscanner"
         minSdkVersion 13
@@ -16,15 +23,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
         debug {
             debuggable true
+            signingConfig signingConfigs.config
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'

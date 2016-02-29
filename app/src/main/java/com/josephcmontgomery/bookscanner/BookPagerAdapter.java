@@ -83,8 +83,10 @@ public class BookPagerAdapter extends FragmentStatePagerAdapter{
             notifyDataSetChanged();
         }
         else{
-            books.remove(position);
-            notifyDataSetChanged();
+            if(books != null) {
+                books.remove(position);
+                notifyDataSetChanged();
+            }
         }
         BookCache.removeBook(book);
     }

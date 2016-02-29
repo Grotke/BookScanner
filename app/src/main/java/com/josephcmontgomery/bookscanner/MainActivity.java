@@ -25,14 +25,11 @@ import com.josephcmontgomery.bookscanner.Tools.ViewMode;
 
 import java.util.ArrayList;
 
-//TODO: Add barcode library.
-//TODO: Figure out activity result fail error. Figure out error on exiting app.
-//TODO: Get API key for Google Books. Check how it handles a lot of requests.
 //TODO: Finalize name and get logo/promotional material.
 public class MainActivity extends AppCompatActivity implements TaskFragment.TaskListener{
     private ProgressDialog dialog;
     ArrayList<BookInformation> books;
-    private final int NUM_TEST_BOOKS = 2000;
+    private final int NUM_TEST_BOOKS = 20;
     private final int CONTINUE_SCANNING = 1;
     private final int BACK_TO_MAIN_MENU = 2;
     private static final String TAG_TASK_FRAGMENT = "task_fragment";

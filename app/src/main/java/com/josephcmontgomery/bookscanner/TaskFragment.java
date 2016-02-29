@@ -73,7 +73,7 @@ public class TaskFragment extends Fragment{
             BookInformation book = null;
             for(String isbn: isbns) {
                 try {
-                    String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+                    String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn +"&key=" + DeveloperKey.DEVELOPER_KEY;
                     inStream = getBookSearchResults(url);
                     book = parseJsonStream(inStream, isbn);
                 } catch (Exception e) {
@@ -108,7 +108,7 @@ public class TaskFragment extends Fragment{
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
-            Log.d("RESPONSE CODE", "The response is: " + response);
+            Log.d("BookItemizer", "Response code is: " + response);
             return conn.getInputStream();
         }
 
