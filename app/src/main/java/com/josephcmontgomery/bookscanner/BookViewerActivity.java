@@ -183,6 +183,15 @@ public class BookViewerActivity extends AppCompatActivity implements BookListFra
             invalidateOptionsMenu();
         }
         else{
+            BookPagerAdapter adapter = (BookPagerAdapter) pager.getAdapter();
+            if (adapter != null) {
+                if (adapter.isEditable()) {
+                    BookEditFragment bookFrag = (BookEditFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
+                    if (bookFrag != null) {
+                        bookFrag.setBookFromUI();
+                    }
+                }
+            }
             pager.setCurrentItem(position);
         }
     }
