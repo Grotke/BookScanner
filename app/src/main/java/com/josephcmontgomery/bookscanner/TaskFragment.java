@@ -78,7 +78,7 @@ public class TaskFragment extends Fragment{
                     book = parseJsonStream(inStream, isbn);
                 } catch (Exception e) {
                     if (e.getMessage() != null) {
-                        Log.e("EXCEPTION", e.getMessage());
+                        Log.d("EXCEPTION", e.getMessage());
                     }
                     book = new BookInformation();
                 }
