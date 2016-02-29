@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class ImageFetcher {
     private static HashMap<String, Drawable> cache = new HashMap<>();
+    private static final int MAX_CACHE_SIZE = 200;
 
     private ImageFetcher(){}
 
@@ -26,6 +27,9 @@ public class ImageFetcher {
     }
 
     private static void setRealImage(final String imageUrl, final ImageView image){
+        if(cache.size() >= MAX_CACHE_SIZE){
+            cache.clear();
+        }
         if(cache.containsKey(imageUrl)){
             image.setImageDrawable(getDrawable(imageUrl));
         }
