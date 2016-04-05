@@ -1,4 +1,6 @@
 # Android Book Scanner
+OUTDATED: I haven't gotten around to updating this documentation yet, but this app is completed. You can find an updated description and screenshots at http://www.josephcmontgomery.com/projects.html#bookscanner
+
 Android app that scans books, stores information from Google Books, then allows users to view cataloged book information.
 
 <img src="https://github.com/Grotke/screenshots/blob/master/bookscannermenu.png" width="300">
